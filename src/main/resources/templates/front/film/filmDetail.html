@@ -1,0 +1,63 @@
+<html lang="cn" xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <meta charset="UTF - 8">
+    <meta name="viewport" content="width=device-width, initial - scale=1.0">
+    <title>影视详情</title>
+    <style>
+        h1,
+        h2,
+        h3 {
+            color: #333;
+        }
+
+
+        img {
+            width: 200px;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        p {
+            line-height: 1.0;
+        }
+    </style>
+</head>
+
+<body>
+<div style="background-color: #ba8034;height: 100%;">
+    <div style="padding: 5%;padding-top: 1%;">
+        <div style="margin-left: -2%"><h1 th:if="${dsFilm.kind eq '0'}">电影</h1>
+            <h1 th:if="${dsFilm.kind eq '1'}">电视剧</h1></div>
+        <h3>
+            <span th:text="${dsFilm.tvSeries}"></span>
+            (<span style="color: rgba(48,47,47,0.91)" th:text="${#dates.format(dsFilm.annual, 'yyyy')}"></span>)
+        </h3>
+        <div style="display: flex">
+            <img th:src="@{${dsFilm.img}}" alt="加载中...">
+            <div style="margin-left: 20px;color: rgba(48,47,47,0.91)">
+                <div style="padding-top: 0px;">导演：<span style="color:#000;" th:text="${dsFilm.director}"></span></div>
+                <div style="padding-top: 5px;">编剧：<span style="color:#000;" th:text="${dsFilm.screenwriter}"></span>
+                </div>
+                <div style="padding-top: 5px;">主演：<span style="color:#000;" th:text="${dsFilm.actor}"></span></div>
+                <div style="padding-top: 5px;">类型：<span style="color:#000;"
+                                                          th:text="${dsFilm.getDisposeType()}"></span></div>
+                <!-- 使用 th:if 判断 episodeNum 不为 null 且不为空 -->
+                <div style="padding-top: 5px;" th:if="${!#strings.isEmpty(dsFilm.episodeNum)}">
+                    集数：<span style="color:#000;" th:text="${dsFilm.episodeNum}"></span>
+                </div>
+                <!-- 使用 th:if 判断 annual 不为 null 且不为空 -->
+                <div style="padding-top: 5px;" th:if="${!#strings.isEmpty(dsFilm.annual)}">
+                    上映时间：<span style="color:#000;" th:text="${#dates.format(dsFilm.annual, 'yyyy-MM-dd')}"></span>
+                </div>
+            </div>
+        </div>
+        <h3>剧情简介：</h3>
+        <div style="width: 60%">
+            <p style="line-height: 1.6; text-indent: 2em;color: #e1e1e1" th:text="${dsFilm.topicContent}"></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

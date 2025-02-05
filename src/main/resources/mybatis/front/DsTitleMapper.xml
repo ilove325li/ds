@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ds.project.front.title.mapper.DsTitleMapper">
+    
+    <resultMap type="DsTitle" id="DsTitleResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="ancestors"    column="ancestors"    />
+        <result property="parentName" column="parent_name" />
+        <result property="briefIntroduction" column="brief_introduction" />
+
+    </resultMap>
+
+    <sql id="selectDsTitleVo">
+        select id, title, parent_id, ancestors,brief_introduction from ds_title
+    </sql>
+
+    <select id="selectDsTitleList" parameterType="DsTitle" resultMap="DsTitleResult">
+        <include refid="selectDsTitleVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title
+                LIKE CONCAT('%',
+                #{title,jdbcType=VARCHAR}, '%')
+
+             </if>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="ancestors != null  and ancestors != ''"> and ancestors = #{ancestors}</if>
+            <if test="briefIntroduction != null  and briefIntroduction != ''"> and brief_introduction = #{briefIntroduction}</if>
+        </where>
+        order by parent_id
+    </select>
+    
+    <select id="selectDsTitleById" parameterType="Long" resultMap="DsTitleResult">
+        select t.id, t.title, t.parent_id, t.ancestors, p.title as parent_name,t.brief_introduction
+        from ds_title t
+        left join ds_title p on p.id = t.parent_id
+        where t.id = #{id}
+    </select>
+        
+    <insert id="insertDsTitle" parameterType="DsTitle">
+        insert into ds_title
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="title != null">title,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="ancestors != null">ancestors,</if>
+            <if test="briefIntroduction != null">brief_introduction,</if>
+
+
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="title != null">#{title},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="ancestors != null">#{ancestors},</if>
+            <if test="briefIntroduction != null">#{briefIntroduction},</if>
+
+         </trim>
+    </insert>
+
+    <update id="updateDsTitle" parameterType="DsTitle">
+        update ds_title
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null">title = #{title},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="ancestors != null">ancestors = #{ancestors},</if>
+            <if test="briefIntroduction != null">brief_introduction = #{briefIntroduction},</if>
+
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDsTitleById" parameterType="Long">
+        delete from ds_title where id = #{id}
+    </delete>
+
+    <delete id="deleteDsTitleByIds" parameterType="String">
+        delete from ds_title where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <select id="selectDsTitleByParentId" parameterType="DsTitle" resultMap="DsTitleResult">
+        <include refid="selectDsTitleVo"/>
+        <where>
+            <if test="aLong != null and aLong != ''">  parent_id = #{aLong}</if>
+        </where>
+        order by parent_id
+    </select>
+
+
+    <select id="selectDsTitleByTitle" parameterType="DsTitle" resultMap="DsTitleResult">
+        <include refid="selectDsTitleVo"/>
+        <where>
+            <if test="title != null and title != ''">  title = #{title}</if>
+        </where>
+        order by parent_id
+    </select>
+</mapper>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ds.project.front.film.mapper.DsFilmMapper">
+    
+    <resultMap type="DsFilm" id="DsFilmResult">
+        <result property="id"    column="id"    />
+        <result property="annual"    column="annual"    />
+        <result property="tvSeries"    column="tv_series"    />
+        <result property="img"    column="img"    />
+        <result property="topicContent"    column="topic_content"    />
+        <result property="type"    column="type"    />
+        <result property="director"    column="director"    />
+        <result property="screenwriter"    column="screenwriter"    />
+        <result property="actor"    column="actor"    />
+        <result property="episodeNum"    column="episode_num"    />
+        <result property="reasons"    column="reasons"    />
+        <result property="chronologicalDivision"    column="chronological_division"    />
+        <result property="url"    column="url"    />
+        <result property="kind"    column="kind"    />
+        <result property="recommend"    column="recommend"    />
+    </resultMap>
+
+    <sql id="selectDsFilmVo">
+        select id, annual, tv_series, img, topic_content, type, director, screenwriter, actor, episode_num, reasons, chronological_division, url, kind, recommend from ds_film
+    </sql>
+
+    <select id="selectDsFilmList" parameterType="DsFilm" resultMap="DsFilmResult">
+        <include refid="selectDsFilmVo"/>
+        <where>  
+            <if test="annual != null "> and annual = #{annual}</if>
+            <if test="tvSeries != null  and tvSeries != ''"> and tv_series like concat('%', #{tvSeries}, '%')</if>
+            <if test="img != null  and img != ''"> and img = #{img}</if>
+            <if test="topicContent != null  and topicContent != ''"> and topic_content like concat('%', #{topicContent}, '%')</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="director != null  and director != ''"> and director like concat('%', #{director}, '%')</if>
+            <if test="screenwriter != null  and screenwriter != ''"> and screenwriter like concat('%', #{screenwriter}, '%')</if>
+            <if test="actor != null  and actor != ''"> and actor like concat('%', #{actor}, '%')</if>
+            <if test="episodeNum != null "> and episode_num = #{episodeNum}</if>
+            <if test="reasons != null  and reasons != ''"> and reasons like concat('%', #{reasons}, '%')</if>
+            <if test="chronologicalDivision != null  and chronologicalDivision != ''"> and chronological_division = #{chronologicalDivision}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="kind != null  and kind != ''"> and kind = #{kind}</if>
+            <if test="recommend != null "> and recommend = #{recommend}</if>
+        </where>
+    </select>
+    
+    <select id="selectDsFilmById" parameterType="Long" resultMap="DsFilmResult">
+        <include refid="selectDsFilmVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertDsFilm" parameterType="DsFilm" useGeneratedKeys="true" keyProperty="id">
+        insert into ds_film
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="annual != null">annual,</if>
+            <if test="tvSeries != null">tv_series,</if>
+            <if test="img != null">img,</if>
+            <if test="topicContent != null">topic_content,</if>
+            <if test="type != null">type,</if>
+            <if test="director != null">director,</if>
+            <if test="screenwriter != null">screenwriter,</if>
+            <if test="actor != null">actor,</if>
+            <if test="episodeNum != null">episode_num,</if>
+            <if test="reasons != null">reasons,</if>
+            <if test="chronologicalDivision != null and chronologicalDivision != ''">chronological_division,</if>
+            <if test="url != null">url,</if>
+            <if test="kind != null and kind != ''">kind,</if>
+            <if test="recommend != null">recommend,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="annual != null">#{annual},</if>
+            <if test="tvSeries != null">#{tvSeries},</if>
+            <if test="img != null">#{img},</if>
+            <if test="topicContent != null">#{topicContent},</if>
+            <if test="type != null">#{type},</if>
+            <if test="director != null">#{director},</if>
+            <if test="screenwriter != null">#{screenwriter},</if>
+            <if test="actor != null">#{actor},</if>
+            <if test="episodeNum != null">#{episodeNum},</if>
+            <if test="reasons != null">#{reasons},</if>
+            <if test="chronologicalDivision != null and chronologicalDivision != ''">#{chronologicalDivision},</if>
+            <if test="url != null">#{url},</if>
+            <if test="kind != null and kind != ''">#{kind},</if>
+            <if test="recommend != null">#{recommend},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDsFilm" parameterType="DsFilm">
+        update ds_film
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="annual != null">annual = #{annual},</if>
+            <if test="tvSeries != null">tv_series = #{tvSeries},</if>
+            <if test="img != null">img = #{img},</if>
+            <if test="topicContent != null">topic_content = #{topicContent},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="director != null">director = #{director},</if>
+            <if test="screenwriter != null">screenwriter = #{screenwriter},</if>
+            <if test="actor != null">actor = #{actor},</if>
+            <if test="episodeNum != null">episode_num = #{episodeNum},</if>
+            <if test="reasons != null">reasons = #{reasons},</if>
+            <if test="chronologicalDivision != null and chronologicalDivision != ''">chronological_division = #{chronologicalDivision},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="kind != null and kind != ''">kind = #{kind},</if>
+            <if test="recommend != null">recommend = #{recommend},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDsFilmById" parameterType="Long">
+        delete from ds_film where id = #{id}
+    </delete>
+
+    <delete id="deleteDsFilmByIds" parameterType="String">
+        delete from ds_film where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+
+
+    <select id="selectDsFilmListOfNew"   resultMap="DsFilmResult">
+        <!-- 引入查询字段 -->
+        <include refid="selectDsFilmVo"/>
+        <!-- 使用 <where> 标签自动处理 where 关键字和多余的 and -->
+        <where>
+            <!-- 检查 dsFilm 对象的 tvSeries 属性是否不为空 -->
+            <if test="dsFilm.tvSeries != null">
+                tv_series like concat('%', #{dsFilm.tvSeries}, '%')
+            </if>
+            <!-- 检查 dsFilm 对象的 kind 属性是否不为空 -->
+            <if test="dsFilm.kind != null">
+                and kind = #{dsFilm.kind}
+            </if>
+            <!-- 检查 shiq 列表是否不为空 -->
+            <if test="shiq != null and shiq.size() > 0">
+                and chronological_division in
+                <!-- 遍历 shiq 列表，生成 IN 子句 -->
+                <foreach item="id" collection="shiq" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ds.project.front.terms.mapper.DsSearchArticleTermsMapper">
+    
+    <resultMap type="DsSearchArticleTerms" id="DsSearchArticleTermsResult">
+        <result property="id"    column="id"    />
+        <result property="searchTerms"    column="search_terms"    />
+        <result property="subheading"    column="subheading"    />
+        <result property="bigHeadline"    column="big_headline"    />
+        <result property="briefIntroduction"    column="brief_introduction"    />
+        <result property="titleId"    column="title_id"    />
+    </resultMap>
+
+    <sql id="selectDsSearchArticleTermsVo">
+        select id, search_terms, subheading, big_headline, brief_introduction,title_id from ds_search_article_terms
+    </sql>
+
+    <select id="selectDsSearchArticleTermsList" parameterType="DsSearchArticleTerms" resultMap="DsSearchArticleTermsResult">
+        <include refid="selectDsSearchArticleTermsVo"/>
+        <where>  
+            <if test="terms.searchTerms != null  and terms.searchTerms != ''"> and search_terms like concat('%', #{terms.searchTerms}, '%')</if>
+            <if test="terms.subheading != null  and terms.subheading != ''"> and subheading like concat('%', #{terms.subheading}, '%')</if>
+            <if test="terms.bigHeadline != null  and terms.bigHeadline != ''"> and big_headline = #{terms.bigHeadline}</if>
+            <if test="terms.briefIntroduction != null  and terms.briefIntroduction != ''"> and brief_introduction like concat('%', #{terms.briefIntroduction}, '%')</if>
+            <if test="titleList != null  and titleList != ''"> and title_id IN
+                <foreach collection="titleList" index="index" item="titleId" open="(" separator="," close=")">
+                    #{titleId,jdbcType=INTEGER}
+                </foreach></if>
+        </where>
+    </select>
+    
+    <select id="selectDsSearchArticleTermsById" parameterType="Long" resultMap="DsSearchArticleTermsResult">
+        <include refid="selectDsSearchArticleTermsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertDsSearchArticleTerms" parameterType="DsSearchArticleTerms">
+        insert into ds_search_article_terms
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="searchTerms != null and searchTerms != ''">search_terms,</if>
+            <if test="subheading != null and subheading != ''">subheading,</if>
+            <if test="bigHeadline != null and bigHeadline != ''">big_headline,</if>
+            <if test="briefIntroduction != null">brief_introduction,</if>
+            <if test="titleId != null">title_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="searchTerms != null and searchTerms != ''">#{searchTerms},</if>
+            <if test="subheading != null and subheading != ''">#{subheading},</if>
+            <if test="bigHeadline != null and bigHeadline != ''">#{bigHeadline},</if>
+            <if test="briefIntroduction != null">#{briefIntroduction},</if>
+            <if test="titleId != null">#{titleId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDsSearchArticleTerms" parameterType="DsSearchArticleTerms">
+        update ds_search_article_terms
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="searchTerms != null and searchTerms != ''">search_terms = #{searchTerms},</if>
+            <if test="subheading != null and subheading != ''">subheading = #{subheading},</if>
+            <if test="bigHeadline != null and bigHeadline != ''">big_headline = #{bigHeadline},</if>
+            <if test="briefIntroduction != null">brief_introduction = #{briefIntroduction},</if>
+            <if test="titleId != null">title_id = #{titleId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDsSearchArticleTermsById" parameterType="Long">
+        delete from ds_search_article_terms where id = #{id}
+    </delete>
+
+    <delete id="deleteDsSearchArticleTermsByIds" parameterType="String">
+        delete from ds_search_article_terms where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <select id="subheadingsOfAllPeriods" parameterType="String" resultMap="DsSearchArticleTermsResult">
+        <include refid="selectDsSearchArticleTermsVo"/>
+        where big_headline = #{id}
+    </select>
+
+
+    <select id="selectDsSearchArticleTermsByTitleId" parameterType="String" resultMap="DsSearchArticleTermsResult">
+        <include refid="selectDsSearchArticleTermsVo"/>
+        where title_id = #{id}
+    </select>
+
+
+</mapper>

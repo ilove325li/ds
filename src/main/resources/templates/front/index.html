@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <script th:src="@{/js/vue/vue.js}"></script>
+    <th:block th:include="include :: footer"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>党史</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .home {
+            height: 100vh;
+            width: 100%;
+            overflow-y: scroll;
+            position: relative;
+            background-color: #ddaa8a;
+            scroll-snap-type: y mandatory;
+        }
+
+        .periods,
+        .homepage,
+        .bigHeadline,
+        .allPeriodstitle {
+            height: 100vh;
+            width: 100%;
+            scroll-snap-align: start;
+        }
+
+        .homepage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #e6a44c;
+
+
+        }
+
+        .homeTitle {
+            /*padding-top: 17%;*/
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 160px;
+            font-weight: 1000;
+            text-shadow: 1px 0px #990000, 1px 2px #660000, 3px 1px #990000,
+            2px 3px #660000, 4px 2px #990000, 4px 4px #660000,
+            5px 3px #990000, 5px 5px #660000, 7px 4px #990000,
+            6px 6px #660000, 8px 5px #990000, 7px 7px #660000,
+            9px 6px #990000, 9px 8px #660000, 11px 7px #990000;
+        }
+
+        /*.menu{*/
+        /*    color: white;*/
+        /*    background-color: rgba(5, 5, 5, 0.85);*/
+        /*    width: 99%;*/
+        /*    position: fixed;*/
+        /*    height: 10%;*/
+
+        /*}*/
+        .menu {
+            color: white;
+            font-size: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            position: fixed;
+            width: 99%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 7% /* 让 .menu 容器占满整个视口高度 */
+        }
+
+        .menu > div {
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu > div > div {
+            margin: 0 80px; /* 为子元素添加左右间距 */
+        }
+
+        .menu > div > div {
+            margin: 0 80px;
+            color: white;
+            cursor: pointer; /* 鼠标悬停时显示指针样式 */
+        }
+
+        .menu > div > div:hover {
+            font-weight: bold;
+            color: #734000;
+        }
+
+        .bigHeadline {
+            background-color: #ba8034;
+        }
+
+        .allPeriodstitle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #e6a44c;
+        }
+
+        .shadowed-title {
+            width: 60%;
+            height: 45%;
+            background-color: white;
+            /*!* 添加外部阴影，水平和垂直偏移量为 0，模糊半径为 10px，扩展半径为 5px，颜色为 rgba(0, 0, 0, 0.3) *!*/
+            /*box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.3);*/
+            /* 设置 box-shadow 属性 */
+            box-shadow: 30px 30px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .subdirectoryOfallPeriodstitle {
+            width: 83%;
+            max-width: 600px;
+            height: 21%;
+            max-height: 200px;
+            background-color: #ba8034;
+            display: flex;
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            justify-content: center;
+            border-radius: 10px;
+            box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.3);
+            align-items: center;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
+        }
+
+        .subdirectoryOfallPeriodstitle:hover {
+            transform: scale(1.05);
+            box-shadow: 12px 12px 8px rgba(0, 0, 0, 0.4);
+            background-color: hsl(31, 88%, 29%);
+        }
+
+
+        /* 轮播容器样式 */
+        .slider-container {
+            /*display: flex;*/
+            background-color: rgba(255, 255, 255, 0);
+            height: 24%;
+            margin-top: 3.5%;
+            overflow: hidden;
+            width: 75%;
+            white-space: nowrap;
+        }
+
+
+        /* 轮播项样式 */
+        .slider {
+            margin-top: 0.5%;
+            /* 将元素作为行内块级元素显示，使其在一行排列 */
+            display: flex;
+            /* 应用名为 slide 的动画，动画时长为 20 秒，线性播放，并且无限循环 */
+            animation: slide 70s linear infinite;
+        }
+
+
+        /* 定义轮播动画 */
+        @keyframes slide {
+            /* 动画开始时（0%），轮播项的初始位置，不进行水平移动 */
+            0% {
+                transform: translateX(0);
+            }
+            /* 动画结束时（100%），轮播项向左移动自身宽度的 100%，实现向右轮播效果 */
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* 鼠标悬停时暂停动画 */
+        .slider-container:hover .slider {
+            /* 当鼠标悬停在轮播容器上时，将轮播项的动画状态设置为暂停 */
+            animation-play-state: paused;
+        }
+
+        /* 鼠标悬停在单个轮播元素上时的样式 */
+        .slider div:hover {
+            /* 当鼠标悬停时，将元素放大到原来的 1.2 倍 */
+            transform: scale(1.02);
+        }
+
+
+        .textOfsamllTile:hover {
+            /* 鼠标悬停时，宽度和高度增加 10px */
+            width: 190.5px;
+            height: 75px;
+            /* 使用较暗的颜色，可以通过降低亮度等方式得到 */
+            background-color: #946628;
+        }
+
+
+        /* 移除了.textOfsamllTile:hover 规则 */
+        .textOfsamllTile {
+            width: 180.5px;
+            height: 65px;
+            background-color: #ba8034;
+            margin-right: 20px;
+            margin-bottom: 10px;
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        /* 定义鼠标悬停时的样式 */
+        .hover-yellow:hover {
+            background-color: #ba8034;
+        }
+    </style>
+    <th:block th:include="include :: header('模态窗口')"/>
+</head>
+
+<body>
+
+<div class="home" id="home">
+
+    <!-- 菜单 -->
+    <div class="menu">
+        <div style="display: flex;
+            text-align: center;
+            justify-content: center;
+            align-items: center;">
+            <div class="goToMyPage" data-target="homepage"> 首页</div>
+            <div @click="goToliterature('  ')">文献数据库</div>
+            <div @click="goToFilmDate()">影视信息库</div>
+            <div>关于我们</div>
+        </div>
+    </div>
+
+
+    <!-- 首页 -->
+    <div class="homepage" id="homepage">
+        <div class="homeTitle">
+            <div style="font-size: 80px">中国共产党人精神谱系</div>
+            文献库
+        </div>
+    </div>
+
+
+    <!-- 大标题 -->
+    <div class="bigHeadline" id="bigHeadline" style="display: flex; justify-content: center;
+            align-items: center; flex-direction: column;">
+<div style="position: absolute;margin-left: -1500px;margin-top: -750px;font-weight: bold;font-size: 26px;color: #f8dccc">
+    中国共产党人的精神谱系
+</div>
+
+        <!-- 简介 -->
+        <div class="shadowed-title" style="overflow-y: scroll;">
+
+            <!-- 文章 -->
+            <div>
+                <!-- 标题 -->
+                <div style="text-align: center;color: #af0505">
+                    <h2 style="margin-bottom: 5px; font-weight: bold">
+                        - 精神之源 -
+                    </h2>
+                    <h1 style="margin-top: 5px;font-weight: bold">
+                        伟大建党精神
+                    </h1>
+                </div>
+
+                <div>
+                    <!-- 内容 -->
+                    <div style="padding-right: 10%;padding-left: 10%; ">
+                        <div>
+                            <p style="text-indent: 2em;font-weight: bold;font-size: 20px; line-height: 40px;">
+                                一百年前，中国共产党的先驱们创建了中国共产党，形成了坚持真理、坚守理想，践行初心、担当使命，不怕牺牲、英勇斗争，对党忠诚、不负人民的伟大建党精神，这是中国共产党的精神之源。
+                            </p>
+                            <p style="text-indent: 2em;font-weight: bold;font-size: 20px; line-height: 40px;margin-top: -1.5%">
+                                一百年来，中国共产党弘扬伟大建党精神，在长期奋斗中构建起中国共产党人的精神谱系，锤炼出鲜明的政治品格。历史川流不息，精神代代相传。我们要继续弘扬光荣传统、赓续红色血脉，永远把伟大建党精神继承下去、发扬光大！
+                            </p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 推荐影视-->
+        <div class="slider-container">
+
+
+            <div class="slider">
+                <div v-for="(item, index) in recommendFilmOfFive"
+                     style="color: black;box-shadow: 20px 20px 10px rgba(0, 0, 0, 0.3);margin-right: 40px">
+                    <!-- 每一部影视 -->
+                    <div style="height: 100%;background-color: yellow; width: 140px;" @click="goToFilmDetail(item.id)">
+                        <div style="width: 100%; height: 170px;position: relative;">
+                            <img :src="item.img" alt="影视海报" style="height: 100%; width: 100%; object-fit: cover;">
+                            <span v-if="item.kind == 0"
+                                  style="position: absolute; bottom: 0; left: 0; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 2px 5px;">电影</span>
+                            <span v-if="item.kind == 1"
+                                  style="position: absolute; bottom: 0; left: 0; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 2px 5px;">电视剧</span>
+                        </div>
+                        <div style="text-align: center;padding-top: 1%">
+                            《{{item.tvSeries}}》
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- 四个章节目录 -->
+    <div class="allPeriodstitle" id="allPeriodstitle" style="display: flex; justify-content: center;
+            align-items: center;">
+
+        <div style="position: absolute;margin-left: -1500px;margin-top: -750px;font-weight: bold;font-size: 26px;color: #f8dccc">
+            中国共产党人的精神谱系
+        </div>
+
+        <div style="background-color: #e6a44c;width: 35%;height: 48%;display: flex;
+        flex-direction: column; justify-content: space-evenly; align-items: center; ">
+
+            <div class="subdirectoryOfallPeriodstitle">
+                <div class="goToMyPage" data-target="onePeriods">新民主主义革命时期</div>
+            </div>
+
+            <div class="subdirectoryOfallPeriodstitle">
+                <div class="goToMyPage" data-target="twoPeriods">社会主义革命和建设时期</div>
+            </div>
+            <div class="subdirectoryOfallPeriodstitle">
+                <div class="goToMyPage" data-target="othreePeriods">改革开发和社会主义现代化建设新时期</div>
+            </div>
+            <div class="subdirectoryOfallPeriodstitle">
+                <div class="goToMyPage" data-target="fourPeriods">中国特色社会主义新时代</div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <!-- =======================================  弹出窗口  ================================================================== -->
+
+
+    <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span
+                            aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">{{titleOfBox}}</h4>
+                </div>
+
+                <div class="modal-body" style="height: 600px ;background-color: rgba(255,255,255,0);overflow-y: scroll">
+
+                    <!--简介-->
+                    <div style="overflow-y: scroll;height: 100px;background-color: rgba(255,255,255,0)">
+                        <p style="text-indent: 2em;font-size: 17px">{{briefIntroductionOfBox}}</p>
+                    </div>
+
+
+                    <!-- 全文搜索关键词 -->
+                    <div style="height: 400px;background-color: rgba(255,255,255,0);overflow-y: scroll; margin-top: 40px;">
+                        <div style="  background-color: rgba(255,255,255,0); display: flex; flex-wrap: wrap; gap: 30px;">
+                            <div v-for="(item, index) in searchTermsOfBox"
+                                 style="background-color: #e6a44c;border-top-left-radius: 15px;
+                                  border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
+                                <!-- 这里假设 searchTermsOfBox 是 Vue 实例中的数据，实际使用时要确保有正确的上下文 -->
+                                <div style="width: 180px;display: flex; justify-content: center;  border-top-left-radius: 15px;
+                                  border-bottom-left-radius: 15px;color: white; font-size: 20px; border-bottom-right-radius: 15px; align-items: center; height: 60px; padding: 5px;"
+                                     class="hover-yellow" @click="goToliterature(item.searchTerms)">
+                                    {{item.searchTerms}}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+<!--                    <button type="button" class="btn btn-primary">保存</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==========================================  弹出窗口  ================================================================ -->
+
+
+    <div class="periods" id="onePeriods" style="   display: flex;
+            justify-content: center; background-color: #ba8034;
+            align-items: center;
+             flex-direction: column;">
+        <!-- 第一个时期 -->
+        <div style="position: absolute;margin-left: -1500px;margin-top: -750px;font-weight: bold;font-size: 26px;color: #f8dccc">
+            中国共产党人的精神谱系
+        </div>
+        <div style="display: flex; justify-content: center;
+            align-items: center; flex-direction: column;
+            background-color: #ffffff;width: 65%;height: 49% ;box-shadow: 30px 30px 20px rgba(0, 0, 0, 0.3);">
+            <!-- 标题 -->
+            <div style="
+            height: 9%;
+            max-height: 200px;
+            display: flex;
+            color: #930000;
+            font-size: 30px;
+            font-weight: bold;
+            justify-content: center;
+            border-radius: 10px;
+            align-items: center;">
+                新民主主义革命时期
+            </div>
+
+            <!-- 小标题 -->
+            <div style="background-color: rgba(239,90,9,0);width: 83.5%;height: 77%; overflow-y: scroll;margin-top:11px">
+                <div v-for="(item, index) in subheadingsOfonePeriods" style="display: inline-block;">
+                    <div class="textOfsamllTile" data-toggle="modal" data-target="#myModal5"
+                         @click="updateTitleOfBox(item.title,item.briefIntroduction,item.id)">
+                        {{item.title}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 推荐影视-->
+        <div class="slider-container">
+            <div class="slider">
+                <div v-for="(item, index) in recommendFilmOfOne"
+                     style="color: black;box-shadow: 20px 20px 10px rgba(0, 0, 0, 0.3);margin-right: 40px">
+                    <!-- 每一部影视 -->
+                    <div style="height: 100%;background-color: yellow; width: 140px;" @click="goToFilmDetail(item.id)">
+                        <div style="width: 100%; height: 170px;position: relative;">
+                            <img :src="item.img" alt="影视海报" style="height: 100%; width: 100%; object-fit: cover;">
+                            <span v-if="item.kind == 0"
+                                  style="position: absolute; bottom: 0; left: 0; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 2px 5px;">电影</span>
+                            <span v-if="item.kind == 1"
+                                  style="position: absolute; bottom: 0; left: 0; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 2px 5px;">电视剧</span>
+                        </div>
+                        <div style="text-align: center;padding-top: 1%">
+                            《{{item.tvSeries}}》
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="periods" id="twoPeriods" style="   display: flex;
+            justify-content: center; background-color: #e6a44c;
+            align-items: center;
+             flex-direction: column;">
+        <!-- 第2个时期 -->
+        <div style="position: absolute;margin-left: -1500px;margin-top: -750px;font-weight: bold;font-size: 26px;color: #f8dccc">
+            中国共产党人的精神谱系
+        </div>
+        <div style="display: flex; justify-content: center;
+            align-items: center; flex-direction: column;
+            background-color: #ffffff;width: 65%;height: 49% ;box-shadow: 30px 30px 20px rgba(0, 0, 0, 0.3);">
+            <!-- 标题 -->
+            <div style="
+            height: 9%;
+            max-height: 200px;
+            display: flex;
+            color: #930000;
+            font-size: 30px;
+            font-weight: bold;
+            justify-content: center;
+            border-radius: 10px;
+            align-items: center;">
+                社会主义革命和建设时期
+            </div>
+
+            <!-- 小标题 -->
+            <div style="background-color: rgba(239,90,9,0);width: 83.5%;height: 77%; overflow-y: scroll;margin-top:11px">
+                <div v-for="(item, index) in subheadingsOfTwoPeriods" style="display: inline-block;">
+                    <div class="textOfsamllTile" data-toggle="modal" data-target="#myModal5"
+                         @click="updateTitleOfBox(item.title,item.briefIntroduction,item.id)">
+                        {{item.title}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 推荐影视-->
+        <div class="slider-container">
+            <div class="slider">
+                <div v-for="(item, index) in recommendFilmOfTwo"
+                     style="color: black;box-shadow: 20px 20px 10px rgba(0, 0, 0, 0.3);margin-right: 40px">
+                    <!-- 每一部影视 -->
+                    <div style="height: 100%;background-color: yellow; width: 140px;" @click="goToFilmDetail(item.id)">
+                        <div style="width: 100%; height: 170px;position: relative;">
+                            <img :src="item.img" alt="影视海报" style="height: 100%; width: 100%; object-fit: cover;">
+                            <span v-if="item.kind == 0"
+                                  style="position: absolute; bottom: 0; left: 0; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 2px 5px;">电影</span>
+                            <span v-if="item.kind == 1"
+                                  style="position: absolute; bottom: 0; left: 0; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 2px 5px;">电视剧</span>
+                        </div>
+                        <div style="text-align: center;padding-top: 1%">
+                            《{{item.tvSeries}}》
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="periods" id="othreePeriods" style="   display: flex;
+            justify-content: center; background-color: #ba8034;
+            align-items: center;
+             flex-direction: column;">
+        <!-- 第3个时期 -->
+        <div style="position: absolute;margin-left: -1500px;margin-top: -750px;font-weight: bold;font-size: 26px;color: #f8dccc">
+            中国共产党人的精神谱系
+        </div>
+        <div style="display: flex; justify-content: center;
+            align-items: center; flex-direction: column;
+            background-color: #ffffff;width: 65%;height: 49% ;box-shadow: 30px 30px 20px rgba(0, 0, 0, 0.3);">
+            <!-- 标题 -->
+            <div style="
+            height: 9%;
+            max-height: 200px;
+            display: flex;
+            color: #930000;
+            font-size: 30px;
+            font-weight: bold;
+            justify-content: center;
+            border-radius: 10px;
+            align-items: center;">
+                改革开放和社会主义现代化建设新时期
+            </div>
+
+            <!-- 小标题 -->
+            <div style="background-color: rgba(239,90,9,0);width: 83.5%;height: 77%; overflow-y: scroll;margin-top:11px">
+                <div v-for="(item, index) in subheadingsOfThreePeriods" style="display: inline-block;">
+                    <div class="textOfsamllTile" data-toggle="modal" data-target="#myModal5"
+                         @click="updateTitleOfBox(item.title,item.briefIntroduction,item.id)">
+                        {{item.title}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 推荐影视-->
+        <div class="slider-container">
+            <div class="slider">
+                <div v-for="(item, index) in recommendFilmOfThree"
+                     style="color: black;box-shadow: 20px 20px 10px rgba(0, 0, 0, 0.3);margin-right: 40px">
+                    <!-- 每一部影视 -->
+                    <div style="height: 100%;background-color: yellow; width: 140px;" @click="goToFilmDetail(item.id)">
+                        <div style="width: 100%; height: 170px;position: relative;">
+                            <img :src="item.img" alt="影视海报" style="height: 100%; width: 100%; object-fit: cover;">
+                            <span v-if="item.kind == 0"
+                                  style="position: absolute; bottom: 0; left: 0; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 2px 5px;">电影</span>
+                            <span v-if="item.kind == 1"
+                                  style="position: absolute; bottom: 0; left: 0; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 2px 5px;">电视剧</span>
+                        </div>
+                        <div style="text-align: center;padding-top: 1%">
+                            《{{item.tvSeries}}》
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="periods" id="fourPeriods" style="   display: flex;
+            justify-content: center; background-color: #e6a44c;
+            align-items: center;
+             flex-direction: column;">
+        <!-- 第4个时期 -->
+        <div style="position: absolute;margin-left: -1500px;margin-top: -750px;font-weight: bold;font-size: 26px;color: #f8dccc">
+            中国共产党人的精神谱系
+        </div>
+        <div style="display: flex; justify-content: center;
+            align-items: center; flex-direction: column;
+            background-color: #ffffff;width: 65%;height: 49% ;box-shadow: 30px 30px 20px rgba(0, 0, 0, 0.3);">
+            <!-- 标题 -->
+            <div style="
+            height: 9%;
+            max-height: 200px;
+            display: flex;
+            color: #930000;
+            font-size: 30px;
+            font-weight: bold;
+            justify-content: center;
+            border-radius: 10px;
+            align-items: center;">
+                中国特色社会主义新时代
+            </div>
+
+            <!-- 小标题 -->
+            <div style="background-color: rgba(239,90,9,0);width: 83.5%;height: 77%; overflow-y: scroll;margin-top:11px">
+                <div v-for="(item, index) in subheadingsOfFourPeriods" style="display: inline-block;">
+                    <div class="textOfsamllTile" data-toggle="modal" data-target="#myModal5"
+                         @click="updateTitleOfBox(item.title,item.briefIntroduction,item.id)">
+                        {{item.title}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 推荐影视-->
+        <div class="slider-container">
+            <div class="slider">
+                <div v-for="(item, index) in recommendFilmOfFour"
+                     style="color: black;box-shadow: 20px 20px 10px rgba(0, 0, 0, 0.3);margin-right: 40px">
+                    <!-- 每一部影视 -->
+                    <div style="height: 100%;background-color: yellow; width: 140px;" @click="goToFilmDetail(item.id)">
+                        <div style="width: 100%; height: 170px;position: relative;">
+                            <img :src="item.img" alt="影视海报" style="height: 100%; width: 100%; object-fit: cover;">
+                            <span v-if="item.kind == 0"
+                                  style="position: absolute; bottom: 0; left: 0; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 2px 5px;">电影</span>
+                            <span v-if="item.kind == 1"
+                                  style="position: absolute; bottom: 0; left: 0; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 2px 5px;">电视剧</span>
+                        </div>
+                        <div style="text-align: center;padding-top: 1%">
+                            《{{item.tvSeries}}》
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    // =================== vue =======================
+    new Vue({
+        el: '#home',
+        data: {
+            message: 'Hello, Vue!',
+            recommendFilmOfOne: [], // 新民主主义革命时期
+            recommendFilmOfTwo: [], // 社会主义革命和建设时期
+            recommendFilmOfThree: [],// 改革开放和社会主义现代化建设新时期
+            recommendFilmOfFour: [],// 中国特色社会主义新时代
+            recommendFilmOfFive: [],// 伟大建党精神
+
+            subheadingsOfonePeriods: [],// 第一个时期的小标题
+            subheadingsOfTwoPeriods: [],// 第二个时期的小标题
+            subheadingsOfThreePeriods: [],// 第三个时期的小标题
+            subheadingsOfFourPeriods: [],// 第四个时期的小标题
+
+            titleOfBox: '加载失败...', // 小标题的搜索词 - 弹出框的标题
+            briefIntroductionOfBox: '无',// 小标题的搜索词 - 弹出框的简介
+            searchTermsOfBox: []// 小标题的搜索词 - 弹出框的全文搜索词
+
+        },
+        methods: {
+            // 获取推荐影视
+            getRecommendFilm(id) {
+                const vm = this;
+                // 拼接 URL 并对 id 参数进行编码
+                const url = ctx + "front/film/getRecommendFilm?id=" + encodeURIComponent(id);
+                $.ajax({
+                    url: url,
+                    type: "get",
+                    success: function (result) {
+                        if (id === 4) {
+                            vm.recommendFilmOfFive = result;
+                            console.log(vm.recommendFilmOfFive)
+                        } else if (id === 0) {
+                            vm.recommendFilmOfOne = result;
+                        } else if (id === 1) {
+                            vm.recommendFilmOfTwo = result;
+                        } else if (id === 2) {
+                            vm.recommendFilmOfThree = result;
+                        } else if (id === 3) {
+                            vm.recommendFilmOfFour = result;
+                        }
+                    }
+                })
+            },
+
+
+            goToFilmDate(){
+                window.location.href = "/front/goToFilmDate";
+            },
+
+            //跳转影视详情
+            goToFilmDetail(id) {
+                window.location.href = "/front/goToFilmDetail?id=" + encodeURIComponent(id);
+            },
+
+            //调整文献数据库
+            goToliterature(searchTerms){
+                window.location.href = "/front/goToliterature?searchTerms=" + encodeURIComponent(searchTerms)+"&key=0";
+            },
+
+            // 获取小标题
+            subheadingsOfAllPeriods(id) {
+                const vm = this;
+                // 拼接 URL 并对 id 参数进行编码
+                const url = ctx + "front/title/subheadingsOfAllPeriods?id=" + encodeURIComponent(id);
+                $.ajax({
+                    url: url,
+                    type: "get",
+                    success: function (result) {
+                        if (id === 0) {
+                            vm.subheadingsOfonePeriods = result;
+                        } else if (id === 1) {
+                            vm.subheadingsOfTwoPeriods = result;
+                        } else if (id === 2) {
+                            vm.subheadingsOfThreePeriods = result;
+                        } else if (id === 3) {
+                            vm.subheadingsOfFourPeriods = result;
+                        }
+                    }
+                })
+            },
+
+
+            // 修改弹出框的数据
+            updateTitleOfBox(title, briefIntroduction, id) {
+                this.titleOfBox = title;
+                this.briefIntroductionOfBox = briefIntroduction;
+                const vm = this;
+                // 拼接 URL 并对 id 参数进行编码
+                const url = ctx + "front/terms/getSearchTermsByTitleId?id=" + encodeURIComponent(id);
+                $.ajax({
+                    url: url,
+                    type: "get",
+                    success: function (result) {
+                        vm.searchTermsOfBox = result;
+                    }
+                })
+
+
+            }
+
+
+
+
+
+
+        },
+
+
+        mounted() {
+            this.getRecommendFilm(0); // 新民主主义革命时期
+            this.getRecommendFilm(1); // 社会主义革命和建设时期
+            this.getRecommendFilm(2); // 改革开放和社会主义现代化建设新时期
+            this.getRecommendFilm(3); // 中国特色社会主义新时代
+            this.getRecommendFilm(4); // 伟大建党精神
+
+            this.subheadingsOfAllPeriods(0) // 新民主主义革命时期
+            this.subheadingsOfAllPeriods(1) // 社会主义革命和建设时期
+            this.subheadingsOfAllPeriods(2) // 改革开放和社会主义现代化建设新时期
+            this.subheadingsOfAllPeriods(3) // 中国特色社会主义新时代
+        },
+        created() {
+        },
+
+    });
+
+
+    // =================== vue =======================
+
+
+    //======================去指定的div======================
+    // 获取所有导航 div
+    const navItems = document.querySelectorAll('.goToMyPage');
+
+    // 为每个导航 div 添加点击事件监听器
+    navItems.forEach(item => {
+        item.addEventListener('click', function () {
+            // 获取导航 div 的 data-target 属性值
+            const targetId = this.getAttribute('data-target');
+            // 根据 targetId 获取目标 div 元素
+            const targetDiv = document.getElementById(targetId);
+
+            if (targetDiv) {
+                // 滚动到目标 div 元素的位置
+                targetDiv.scrollIntoView({
+                    behavior: 'smooth', // 平滑滚动效果
+                    block: 'start' // 滚动到元素顶部
+                });
+            }
+        });
+    });
+    //======================去指定的div======================
+
+
+</script>
+</body>
+
+</html>

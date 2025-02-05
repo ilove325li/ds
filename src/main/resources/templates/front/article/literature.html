@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <script th:src="@{/js/vue/vue.js}"></script>
+    <th:block th:include="include :: header('文章管理列表')"/>
+</head>
+<body class="gray-bg">
+
+<div style="width: 100%;height: 100%;background-color: #e6a44c" class="hame" id="home">
+
+    <!--    <div th:text="${literature}">-->
+    <!--    </div>-->
+    <!-- 菜单 -->
+    <div class="menu">
+        <div style="display: flex;
+            text-align: center;
+            justify-content: center;
+            align-items: center;">
+            <div class="goToMyPage" data-target="homepage" @click="getoHome()"> 首页</div>
+            <div>文献数据库</div>
+            <div  @click="goToFilmDate()">影视信息库</div>
+            <div>关于我们</div>
+        </div>
+    </div>
+
+
+    <div style="padding-top: 15%;" id="targetDiv">
+
+        <!-- 标题-->
+        <div style="text-align: center;font-size: 37px;font-weight: bold;color: white">
+            <div>中国共产党人精神谱系</div>
+            <div>文献数据库</div>
+        </div>
+
+
+
+        <form id="formId">
+
+
+
+                        <!-- 搜索框 -->
+            <div style="display: flex; justify-content: center; margin-top: 30px;">
+                <div class="search" style="min-width: 500px; max-width: 800px; border: 2px solid white; display: flex; border-radius: 19px 19px 19px 19px">
+                    <select style="display: inline; padding-left: 4px; width: 72px; border-radius: 15px 0 0 15px; border: none; outline: none" name="key">
+                        <option style="display: inline" value="0" th:selected="${searchKey == '0'}">全文</option>
+                        <option style="display: inline" value="1" th:selected="${searchKey == '1'}">标题</option>
+                        <option style="display: inline" value="2" th:selected="${searchKey == '2'}">关键字</option>
+                    </select>
+                    <input style="border: none; outline: none" placeholder="请输入..." id="keywordInput" name="searchTerms" type="text">
+                    <div style="width:72px" id="loadPapersBtn">
+                        <button style="width:72px; border: none; outline: none" type="submit" onclick="selectArticle()"></button>
+                    </div>
+                </div>
+            </div>
+
+
+
+                        <!--                        <input  class="time-input" placeholder="请选择年度" name="annual"  type="hidden"/>-->
+
+
+        </form>
+
+
+        <!-- 表格 -->
+        <div v-if="isShowTable" style="padding-left:200px;padding-right: 200px;padding-top: 50px;">
+            <div class="container-div">
+                <div class="row">
+                    <div class="col-sm-12 select-table table-striped">
+                        <table id="bootstrap-table"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+
+
+    // 使用 Thymeleaf 内联表达式直接获取 literature 的值
+    var literature = [[${literature}]];
+    var searchKey = [[${searchKey}]];
+
+    // function getoHome(){
+    //     window.location.href = "/";
+    // }
+
+    // 将 literature 的值打印到控制台
+    console.log(literature);
+
+
+    // $(function () {
+
+        // 获取输入框元素
+        var inputElement = document.getElementById('keywordInput');
+        // 给输入框赋值
+
+        // console.log('输入框当前值:', inputElement);
+
+        // if('notValue' === literature){
+        //     inputElement.value = "literature";
+        // }
+
+
+
+        // 获取目标 div 元素
+        var targetDiv = document.getElementById('targetDiv');
+        // 判断 literature 是否不为 null
+        if (literature !== undefined && literature !== ' ') {
+            // 修改 padding-top 样式
+            targetDiv.style.paddingTop = '5%';
+        }
+    // });
+
+
+    // 文献表格
+    var prefix = ctx + "front/article";
+    var datas = [[${@dict.getType('sys_normal_disable')}]];
+
+    // 定义点击事件处理函数
+    function goToArticleDetail(id) {
+        // 这里可以编写点击题名后的具体逻辑，例如弹出提示框显示题名
+        // alert("2222")
+        window.location.href = "/front/goToArticleDetail?id=" + encodeURIComponent(id);
+    }
+
+
+
+
+
+    $(function () {
+        var options = {
+            url: prefix + "/selectArticle?text="+literature+"&"+"key="+searchKey,
+            // showFooter: true,
+            // showSearch: false,
+            // showRefresh: false,
+            // showToggle: false,
+            // showColumns: false,
+            // footerStyle: footerStyle,
+            columns: [
+            //     {
+            //     checkbox: true
+            // },
+                {
+                    field: 'srcDatabase',
+                    title: '来源库'
+                },
+                {
+                    field: 'title',
+                    title: '题名',
+                    formatter: function (value, row, index) {
+                        // 创建一个带有点击事件的 a 标签
+                        return '<a href="javascript:void(0);" onclick="goToArticleDetail(\'' + row.id + '\')">' + value + '</a>';
+                    }
+                },
+                {
+                    field: 'author',
+                    title: '作者'
+                },
+                {
+                    field: 'organ',
+                    title: '单位'
+                },
+                {
+                    field: 'source',
+                    title: '文献来源'
+                },
+                {
+                    field: 'keyword',
+                    title: '关键词'
+                },
+                {
+                    field: 'summary',
+                    title: '摘要'
+                },
+                {
+                    field: 'articleText',
+                    title: '链接'
+                },
+                {
+                    field: 'pubTime',
+                    title: '发表时间'
+                }
+            ]
+        };
+        $.table.init(options);
+
+
+
+
+
+
+
+
+
+        // 获取输入框元素
+        var inputElement = document.getElementById('keywordInput');
+        // 给输入框赋值
+        inputElement.value = literature;
+
+        // 获取目标 div 元素
+        var targetDiv = document.getElementById('targetDiv');
+        // 判断 literature 是否不为 null
+        if (literature !== null && literature !== '') {
+            // 修改 padding-top 样式
+            targetDiv.style.paddingTop = '5%';
+        }
+    });
+
+    function footerStyle(column) {
+        return {
+//         	    userBalance: {
+//         	        classes: 'class'
+//         	    },
+            userBalance: {
+                css: {color: 'red', 'font-weight': 'normal'}
+            }
+        }[column.field]
+    }
+
+
+    // function selectArticle(){
+    //     var options = {
+    //         url: prefix + "/selectArticle",
+    //         // showFooter: true,
+    //         // showSearch: false,
+    //         // showRefresh: false,
+    //         // showToggle: false,
+    //         // showColumns: false,
+    //         // footerStyle: footerStyle,
+    //         columns: [
+    //             //     {
+    //             //     checkbox: true
+    //             // },
+    //             {
+    //                 field: 'srcDatabase',
+    //                 title: '来源库'
+    //             },
+    //             {
+    //                 field: 'title',
+    //                 title: '题名2'
+    //             },
+    //             {
+    //                 field: 'author',
+    //                 title: '作者'
+    //             },
+    //             {
+    //                 field: 'organ',
+    //                 title: '单位'
+    //             },
+    //             {
+    //                 field: 'source',
+    //                 title: '文献来源'
+    //             },
+    //             {
+    //                 field: 'keyword',
+    //                 title: '关键词'
+    //             },
+    //             {
+    //                 field: 'summary',
+    //                 title: '摘要'
+    //             },
+    //             {
+    //                 field: 'articleText',
+    //                 title: '全文'
+    //             },
+    //             {
+    //                 field: 'pubTime',
+    //                 title: '发表时间'
+    //             }
+    //         ]
+    //     };
+    //     $.table.init(options);
+    // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    new Vue({
+        el: '#home',
+        data: {
+            isShowTable: literature,
+
+        },
+        methods: {
+
+            getoHome(){
+                window.location.href = "/";
+            },
+
+            goToFilmDate(){
+                window.location.href = "/front/goToFilmDate";
+            },
+
+
+        },
+
+
+        mounted() {
+
+        },
+        created() {
+        },
+
+    });
+
+
+    // =================== vue =======================
+
+
+</script>
+
+</body>
+
+
+<style>
+
+    .search input {
+        width: 100%;
+        height: 42px;
+        padding-left: 13px;
+        border: 2px solid #c5464a;
+        /*border-radius: 19px; !*border-radius 属性用于向元素添加圆角边框：*!*/
+        /*background: transparent; !*背景透明*!*/
+    }
+
+    .search button {
+        height: 42px;
+        width: 72px;
+        cursor: pointer; /*cursor属性定义了鼠标指针放在一个元素边界范围内时所用的光标形状*/
+        /*position: absolute;*/
+        background: #c5464a;
+        border-radius: 0 19px 19px 0;
+        width: 60px;
+        right: 0;
+    }
+
+    .search button:hover {
+        background-color: #c7585c; /*点击搜索按钮时的背景颜色*/
+    }
+
+    /* 在<button>元素后面插入内容，并设置所插入内容的样式： */
+    .search button:before {
+        content: "搜索"; /*插入的内容*/
+        font-size: 13px; /*插入内容的字体大小*/
+        color: #F9F0DA; /*插入内容的字体颜色*/
+    }
+
+    .menu {
+        color: white;
+        font-size: 20px;
+        background-color: rgba(0, 0, 0, 0.2);
+        position: fixed;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 7% /* 让 .menu 容器占满整个视口高度 */
+    }
+
+    .menu > div {
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .menu > div > div {
+        margin: 0 80px; /* 为子元素添加左右间距 */
+    }
+
+
+    .menu > div > div {
+        margin: 0 80px;
+        color: white;
+        cursor: pointer; /* 鼠标悬停时显示指针样式 */
+    }
+
+    .menu > div > div:hover {
+        font-weight: bold;
+        color: #734000;
+    }
+</style>
+</html>

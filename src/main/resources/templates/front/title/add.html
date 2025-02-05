@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增党史标题管理')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-title-add">
+
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">父部门id：</label>
+                <div class="col-sm-8">
+                    <div class="input-group">
+                        <input id="treeId" name="parentId" type="hidden" th:value="${dsTitle?.id}"/>
+                        <input class="form-control" type="text" onclick="selectTitleTree()" id="treeName" readonly="true" th:value="${dsTitle?.title}">
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">小标题、时期：</label>
+                <div class="col-sm-8">
+                    <input name="title" class="form-control" type="text">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">简介：</label>
+                <div class="col-sm-8">
+                    <textarea name="briefIntroduction" class="form-control" type="text"></textarea>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "front/title"
+        $("#form-title-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-title-add').serialize());
+            }
+        }
+
+        /*党史标题管理-新增-选择父党史标题管理树*/
+        function selectTitleTree() {
+            var options = {
+                title: '党史标题管理选择',
+                width: "380",
+                url: prefix + "/selectTitleTree/" + $("#treeId").val(),
+                callBack: doSubmit
+            };
+            $.modal.openOptions(options);
+        }
+
+        function doSubmit(index, layero){
+            var body = $.modal.getChildFrame(index);
+            $("#treeId").val(body.find('#treeId').val());
+            $("#treeName").val(body.find('#treeName').val());
+            $.modal.close(index);
+        }
+    </script>
+</body>
+</html>

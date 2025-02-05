@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('影视管理列表')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <label>年度：</label>
+                            <input type="text" class="time-input" placeholder="请选择年度" name="annual"/>
+                        </li>
+                        <li>
+                            <label>电视剧：</label>
+                            <input type="text" name="tvSeries"/>
+                        </li>
+                        <li>
+                            <label>导演：</label>
+                            <input type="text" name="director"/>
+                        </li>
+                        <li>
+                            <label>编剧：</label>
+                            <input type="text" name="screenwriter"/>
+                        </li>
+                        <li>
+                            <label>主要演员：</label>
+                            <input type="text" name="actor"/>
+                        </li>
+                        <li>
+                            <label>集数：</label>
+                            <input type="text" name="episodeNum"/>
+                        </li>
+                        <li>
+                            <label>提名理由：</label>
+                            <input type="text" name="reasons"/>
+                        </li>
+                        <li>
+                            <label>年代划分：</label>
+                            <select name="chronologicalDivision" th:with="type=${@dict.getType('ds_history')}">
+                                <option value="">所有</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>链接：</label>
+                            <input type="text" name="url"/>
+                        </li>
+                        <li>
+                            <label>影视分类：</label>
+                            <select name="kind" th:with="type=${@dict.getType('ds_kind')}">
+                                <option value="">所有</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>是否推荐：</label>
+                            <select name="recommend" th:with="type=${@dict.getType('ds_film_recommend')}">
+                                <option value="">所有</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="front:film:add">
+                <i class="fa fa-plus"></i> 添加
+            </a>
+            <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="front:film:edit">
+                <i class="fa fa-edit"></i> 修改
+            </a>
+            <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()"
+               shiro:hasPermission="front:film:remove">
+                <i class="fa fa-remove"></i> 删除
+            </a>
+            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="front:film:export">
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('front:film:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('front:film:remove')}]];
+    var typeDatas = [[${@dict.getType('ds_film_type')}]];
+    var chronologicalDivisionDatas = [[${@dict.getType('ds_history')}]];
+    var kindDatas = [[${@dict.getType('ds_kind')}]];
+    var recommendDatas = [[${@dict.getType('ds_film_recommend')}]];
+    var prefix = ctx + "front/film";
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "影视管理",
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'id',
+                    title: '',
+                    visible: false
+                },
+                {
+                    field: 'annual',
+                    title: '年度'
+                },
+                {
+                    field: 'tvSeries',
+                    title: '电视剧'
+                },
+                {
+                    // field: 'img',
+                    title: '海报图',
+                    formatter: function (value, row, index) {
+                        // 图片预览（注意：如存储在本地直接获取数据库路径，如有配置context-path需要使用ctx+路径）
+                        // 如：/profile/upload/2019/08/08/3b7a839aced67397bac694d77611ce72.png
+                        return $.table.imageView(row.img);
+
+                    }
+                },
+                {
+                    field: 'topicContent',
+                    title: '主题内容以内容准确为目标'
+                },
+                {
+                    field: 'type',
+                    title: '影视类型',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabels(typeDatas, value);
+                    }
+                },
+                {
+                    field: 'director',
+                    title: '导演'
+                },
+                {
+                    field: 'screenwriter',
+                    title: '编剧'
+                },
+                {
+                    field: 'actor',
+                    title: '主要演员'
+                },
+                {
+                    field: 'episodeNum',
+                    title: '集数'
+                },
+                {
+                    field: 'reasons',
+                    title: '提名理由'
+                },
+                {
+                    field: 'chronologicalDivision',
+                    title: '年代划分',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(chronologicalDivisionDatas, value);
+                    }
+                },
+                {
+                    field: 'url',
+                    title: '链接'
+                },
+                {
+                    field: 'kind',
+                    title: '影视分类',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(kindDatas, value);
+                    }
+                },
+                {
+                    field: 'recommend',
+                    title: '是否推荐',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(recommendDatas, value);
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ds.project.front.article.mapper.DsArticleMapper">
+    
+    <resultMap type="DsArticle" id="DsArticleResult">
+        <result property="id"    column="id"    />
+        <result property="srcDatabase"    column="srcDatabase"    />
+        <result property="title"    column="title"    />
+        <result property="author"    column="author"    />
+        <result property="organ"    column="organ"    />
+        <result property="source"    column="source"    />
+        <result property="keyword"    column="keyword"    />
+        <result property="summary"    column="summary"    />
+        <result property="pubTime"    column="pubTime"    />
+        <result property="articleText"    column="articleText"    />
+    </resultMap>
+
+    <sql id="selectDsArticleVo">
+        select id, srcDatabase, title, author, organ, source, keyword, summary, pubTime, articleText from ds_article
+    </sql>
+
+    <select id="selectDsArticleList" parameterType="DsArticle" resultMap="DsArticleResult">
+        <include refid="selectDsArticleVo"/>
+        <where>  
+            <if test="srcDatabase != null  and srcDatabase != ''"> and srcDatabase like concat('%', #{srcDatabase}, '%')</if>
+            <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
+            <if test="author != null  and author != ''"> and author like concat('%', #{author}, '%')</if>
+            <if test="organ != null  and organ != ''"> and organ like concat('%', #{organ}, '%')</if>
+            <if test="source != null  and source != ''"> and source like concat('%', #{source}, '%')</if>
+            <if test="keyword != null  and keyword != ''"> and keyword like concat('%', #{keyword}, '%')</if>
+            <if test="summary != null  and summary != ''"> and summary like concat('%', #{summary}, '%')</if>
+            <if test="pubTime != null "> and pubTime = #{pubTime}</if>
+            <if test="articleText != null  and articleText != ''"> and articleText like concat('%', #{articleText}, '%')</if>
+        </where>
+    </select>
+
+
+
+
+
+    
+    <select id="selectDsArticleById" parameterType="Long" resultMap="DsArticleResult">
+        <include refid="selectDsArticleVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertDsArticle" parameterType="DsArticle" useGeneratedKeys="true" keyProperty="id">
+        insert into ds_article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="srcDatabase != null">srcDatabase,</if>
+            <if test="title != null">title,</if>
+            <if test="author != null">author,</if>
+            <if test="organ != null">organ,</if>
+            <if test="source != null">source,</if>
+            <if test="keyword != null">keyword,</if>
+            <if test="summary != null">summary,</if>
+            <if test="pubTime != null">pubTime,</if>
+            <if test="articleText != null">articleText,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="srcDatabase != null">#{srcDatabase},</if>
+            <if test="title != null">#{title},</if>
+            <if test="author != null">#{author},</if>
+            <if test="organ != null">#{organ},</if>
+            <if test="source != null">#{source},</if>
+            <if test="keyword != null">#{keyword},</if>
+            <if test="summary != null">#{summary},</if>
+            <if test="pubTime != null">#{pubTime},</if>
+            <if test="articleText != null">#{articleText},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDsArticle" parameterType="DsArticle">
+        update ds_article
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="srcDatabase != null">srcDatabase = #{srcDatabase},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="author != null">author = #{author},</if>
+            <if test="organ != null">organ = #{organ},</if>
+            <if test="source != null">source = #{source},</if>
+            <if test="keyword != null">keyword = #{keyword},</if>
+            <if test="summary != null">summary = #{summary},</if>
+            <if test="pubTime != null">pubTime = #{pubTime},</if>
+            <if test="articleText != null">articleText = #{articleText},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDsArticleById" parameterType="Long">
+        delete from ds_article where id = #{id}
+    </delete>
+
+    <delete id="deleteDsArticleByIds" parameterType="String">
+        delete from ds_article where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

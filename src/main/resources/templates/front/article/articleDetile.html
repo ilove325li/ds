@@ -1,0 +1,78 @@
+<html lang="cn" xmlns:th="http://www.thymeleaf.org">
+
+
+<!DOCTYPE html>
+
+
+<head>
+    <meta charset="UTF - 8">
+    <title></title>
+</head>
+
+<body>
+
+<div style="padding: 20%;margin-top: -10%;background-color: #e6a44c">
+
+
+
+<div>
+    <span style="font-size: 17px;font-weight: bold">来源：</span><span th:text="${dsArticle.srcDatabase}"></span>
+</div>
+
+    <div style="display: flex;align-items: center;justify-content: center;"><h1 th:text="${dsArticle.title}"></h1></div>
+    <div style="display: flex;align-items: center;justify-content: center;"><span style="font-size: 17px;font-weight: bold"> 作者：</span><span th:text="${dsArticle.author}"></span></div>
+    <h2>摘要：</h2>
+    <p th:text="${dsArticle.summary}">
+
+    </p>
+
+
+    <span style="font-size: 17px;font-weight: bold">关键词：</span><span th:text="${dsArticle.keyword}"></span>
+
+
+<!--    <p>东；人民军队；军事思想；座谈会；</p>-->
+<div style="margin-top: 10px">
+    <span style="font-size: 17px;font-weight: bold">发表日期：</span><span th:text="${dsArticle.pubTime}"></span>
+
+</div>
+
+<!--    <button @click="getTonewPage(dsArticle.articleText})">跳转页面</button>-->
+
+
+<!--    <div>-->
+<!--        <a th:href="${dsArticle.articleText}">跳转页面</a>-->
+<!--    </div>-->
+
+
+    <div style="margin-top: 10px">
+        <span style="font-size: 17px;font-weight: bold">链接：</span><span th:text="${dsArticle.articleText}"></span>
+
+    </div>
+<!--<div >：  <span th:text="${dsArticle.articleText}"></span></div>-->
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+<script>
+
+
+
+    // function getTonewPage (url){
+    //     alert(url)
+    // }
+
+
+</script>
+
+</html>

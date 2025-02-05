@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script th:src="@{/js/vue/vue.js}"></script>
+    <th:block th:include="include :: footer"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>党史</title>
+    <style></style>
+</head>
+<body>
+<div id="home" class="home" style="background-color: red;height: 99vh">
+
+
+    <!-- 菜单 -->
+    <div class="menu">
+        <div style="display: flex;
+            text-align: center;
+            justify-content: center;
+            align-items: center;">
+            <div class="goToMyPage" data-target="homepage" @click="getoHome()"> 首页</div>
+            <div @click="goToliterature('  ')">文献数据库</div>
+            <div @click="goToFilmDate()">影视信息库</div>
+            <div>关于我们</div>
+        </div>
+    </div>
+
+    <div style="padding-left:10%;padding-right: 10%;background-color: #e6a44c;height: 100% ">
+        <!--标题 -->
+        <div style="padding-top:7%;margin-bottom:10px;display: flex;align-items: center;justify-content: center;flex-direction: column;background-color: #e6a44c">
+            <div style="color: red;font-size: 30px;font-weight: bold">中国共产党人精神谱系</div>
+            <div style="color: red;font-size: 30px;font-weight: bold">影视信息库</div>
+        </div>
+        <div>
+            <form style="background-color: #ffffff;padding-top: 20px;padding-bottom: 20px;" @submit.prevent="selectFilm">
+                <div style="margin-bottom: 10px">
+                    <div class="search">
+                        <div class="myForm">
+                            <!-- 使用 v-model 绑定输入框的值 -->
+                            <input placeholder="请输入..." name="keyword" type="text" v-model="keyword">
+                            <button type="submit"></button>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex;margin-left: 60px">
+                    <div>
+                        <!-- 使用 v-model 绑定单选框的值 -->
+                        <input type="radio" value="电影" name="filmType" v-model="selectedFilmType">电影
+                        <input type="radio" value="电视剧" name="filmType" v-model="selectedFilmType">电视剧
+                    </div>
+                    <div style="margin-left: 40px;border-left: 2px solid #0b0b0b;padding-left: 50px">
+                        <!-- 使用 v-model 绑定复选框的值 -->
+                        <input style="margin-left: 0px" type="checkbox" value="0" v-model="selectedPeriods">新民主主义革命时期
+                        <input style="margin-left: 20px" type="checkbox" value="1" v-model="selectedPeriods">社会主义革命和建设时期
+                        <input style="margin-left: 20px" type="checkbox" value="2" v-model="selectedPeriods">改革开放和社会主义现代化建设新时期
+                        <input style="margin-left: 20px" type="checkbox" value="3" v-model="selectedPeriods">中国特色社会主义新时代
+                        <input style="margin-left: 20px" type="checkbox" value="4" v-model="selectedPeriods">伟大建党精神
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+        <!-- 影视列表 -->
+        <div style="padding-right: 10%;padding-left: 10%;background-color: #ffffff ;height: 550px;overflow-y: scroll">
+            <div style=" display: flex;     flex-wrap: wrap;gap: 20px; ">
+                <div v-for="(item, index) in selectFilmDate"
+                     style="color: black;box-shadow: 20px 20px 10px rgba(0, 0, 0, 0.3);margin-right: 40px">
+                    <!-- 每一部影视 -->
+                    <div style="height: 100%;background-color: #ccccc7; width: 140px;" @click="goToFilmDetail(item.id)">
+                        <div style="width: 100%; height: 170px;position: relative;">
+                            <img :src="item.img" alt="影视海报" style="height: 100%; width: 100%; object-fit: cover;">
+                            <span v-if="item.kind == 0"
+                                  style="position: absolute; bottom: 0; left: 0; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 2px 5px;">电影</span>
+                            <span v-if="item.kind == 1"
+                                  style="position: absolute; bottom: 0; left: 0; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 2px 5px;">电视剧</span>
+                        </div>
+                        <div style="text-align: center;padding-top: 1%">
+                            《{{item.tvSeries}}》
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+<script>
+    new Vue({
+        el: '#home',
+        data: {
+            message: 'Hello, Vue!',
+            searchTermsOfBox: [], // 小标题的搜索词 - 弹出框的全文搜索词
+            keyword: '', // 输入框的值
+            selectedFilmType: '电影', // 单选框选中的值
+            selectedPeriods: ['0'], // 复选框选中的值
+            selectFilmDate:[]
+        },
+        methods: {
+            selectFilm() {
+                // 收集表单数据
+                const formData = {
+                    keyword: this.keyword,
+                    filmType: this.selectedFilmType,
+                    periods: this.selectedPeriods
+                };
+                // 打印表单数据，你可以在这里进行后续操作，如发送请求等
+                console.log(formData);
+                const vm = this;
+                // 拼接 URL 并对 id 参数进行编码
+                const url = ctx + "front/film/selectFilm";
+                $.ajax({
+                    url: url,
+                    type: "post",
+                    data: formData,
+                    success: function (result) {
+                            vm.selectFilmDate = result;
+                    }
+                })
+
+
+            },
+            //跳转影视详情
+            goToFilmDetail(id) {
+                window.location.href = "/front/goToFilmDetail?id=" + encodeURIComponent(id);
+            },
+            //调整文献数据库
+            goToliterature(searchTerms){
+                window.location.href = "/front/goToliterature?searchTerms=" + encodeURIComponent(searchTerms)+"&key=0";
+            },
+            getoHome(){
+                window.location.href = "/";
+            }
+
+        },
+        mounted() {},
+        created() {}
+    });
+</script>
+<style>
+    .myForm {
+        /* 放大 1.5 倍，可按需调整 */
+        transform: scale(1.01);
+        /* 设定缩放的起始点 */
+        transform-origin: top left;
+    }
+    * {
+        box-sizing: border-box; /*宽度和高度会包括内边距和边框*/
+    }
+    div.search {
+        padding: 10px 0;
+    }
+    .myForm {
+        position: relative;
+        width: 600px;
+        margin: 0 auto; /*设置宽度后，居中*/
+    }
+    input, button {
+        border: none; /*无边框样式；元素的总宽度和高度包括边框的宽度 */
+        outline: none; /*无轮廓样式；轮廓是在元素周围绘制的一条线，在边框之外并且可能与其他内容重叠，以凸显元素，元素的总宽度和高度不受轮廓线宽度的影响。*/
+    }
+    .search input {
+        width: 100%;
+        height: 42px;
+        padding-left: 13px;
+        border: 2px solid #c5464a;
+        border-radius: 19px; /*border-radius 属性用于向元素添加圆角边框：*/
+        background: transparent; /*背景透明*/
+    }
+    .search button {
+        height: 42px;
+        width: 42px;
+        cursor: pointer; /*cursor属性定义了鼠标指针放在一个元素边界范围内时所用的光标形状*/
+        position: absolute;
+        background: #c5464a;
+        border-radius: 0 19px 19px 0;
+        width: 60px;
+        right: 0;
+    }
+    .search button:hover {
+        background-color: #c7585c; /*点击搜索按钮时的背景颜色*/
+    }
+    /* 在<button>元素后面插入内容，并设置所插入内容的样式： */
+    .search button:before {
+        content: "搜索"; /*插入的内容*/
+        font-size: 13px; /*插入内容的字体大小*/
+        color: #F9F0DA; /*插入内容的字体颜色*/
+    }
+
+
+    /*.menu{*/
+    /*    color: white;*/
+    /*    background-color: rgba(5, 5, 5, 0.85);*/
+    /*    width: 99%;*/
+    /*    position: fixed;*/
+    /*    height: 10%;*/
+
+    /*}*/
+    .menu {
+        color: white;
+        font-size: 20px;
+        background-color: rgba(0, 0, 0, 0.2);
+        position: fixed;
+        width: 99%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 7% /* 让 .menu 容器占满整个视口高度 */
+    }
+
+    .menu > div {
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .menu > div > div {
+        margin: 0 80px; /* 为子元素添加左右间距 */
+    }
+
+    .menu > div > div {
+        margin: 0 80px;
+        color: white;
+        cursor: pointer; /* 鼠标悬停时显示指针样式 */
+    }
+
+    .menu > div > div:hover {
+        font-weight: bold;
+        color: #734000;
+    }
+</style>
+</html>
