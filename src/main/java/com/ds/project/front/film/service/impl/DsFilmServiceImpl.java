@@ -100,9 +100,9 @@ public class DsFilmServiceImpl implements IDsFilmService
     }
 
     @Override
-    public List<DsFilm> selectDsFilmListOfNew(DsFilm dsFilm, List<String> shiqi) {
-        List<DsFilm> dsFilms = dsFilmMapper.selectDsFilmListOfNew(dsFilm, shiqi);
-        return dsFilmMapper.selectDsFilmListOfNew( dsFilm,  shiqi);
+    public List<DsFilm> selectDsFilmListOfNew(DsFilm dsFilm,List<String> kinds, List<String> shiqi) {
+//        List<DsFilm> dsFilms = dsFilmMapper.selectDsFilmListOfNew(dsFilm, shiqi);
+        return dsFilmMapper.selectDsFilmListOfNew(dsFilm, kinds,  shiqi);
     }
 
     @Override

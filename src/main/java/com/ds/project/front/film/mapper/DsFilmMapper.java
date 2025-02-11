@@ -60,5 +60,5 @@ public interface DsFilmMapper
      */
     public int deleteDsFilmByIds(String[] ids);
 
-    List<DsFilm> selectDsFilmListOfNew(@Param("dsFilm") DsFilm dsFilm,@Param("shiq") List<String> shiqi);
+    List<DsFilm> selectDsFilmListOfNew(@Param("dsFilm") DsFilm dsFilm,@Param("kinds") List<String> kinds,@Param("shiq") List<String> shiqi);
 }

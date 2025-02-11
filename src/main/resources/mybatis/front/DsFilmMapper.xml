@@ -132,8 +132,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 tv_series like concat('%', #{dsFilm.tvSeries}, '%')
             </if>
             <!-- 检查 dsFilm 对象的 kind 属性是否不为空 -->
-            <if test="dsFilm.kind != null">
-                and kind = #{dsFilm.kind}
+<!--            <if test="dsFilm.kind != null">-->
+<!--                and kind = #{dsFilm.kind}-->
+<!--            </if>-->
+            <!-- 检查 shiq 列表是否不为空 -->
+            <if test="kinds != null and kinds.size() > 0">
+                and kind in
+                <!-- 遍历 shiq 列表，生成 IN 子句 -->
+                <foreach item="id" collection="kinds" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
             </if>
             <!-- 检查 shiq 列表是否不为空 -->
             <if test="shiq != null and shiq.size() > 0">

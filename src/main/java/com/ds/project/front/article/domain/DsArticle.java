@@ -57,6 +57,18 @@ public class DsArticle extends BaseEntity
     @Excel(name = "url")
     private String articleText;
 
+    public String getFullTextWords() {
+        return fullTextWords;
+    }
+
+    public void setFullTextWords(String fullTextWords) {
+        this.fullTextWords = fullTextWords;
+    }
+
+    /** 全文词 */
+    @Excel(name = "全文词")
+    private String fullTextWords;
+
     public void setId(Long id)
     {
         this.id = id;

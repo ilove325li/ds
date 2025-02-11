@@ -3,7 +3,9 @@ package com.ds.project.front.film.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ds.framework.aspectj.lang.annotation.Excel;
 import com.ds.project.front.article.domain.DsArticle;
+import org.apache.commons.compress.utils.Lists;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,17 +20,17 @@ import com.ds.framework.web.domain.AjaxResult;
 import com.ds.common.utils.poi.ExcelUtil;
 import com.ds.framework.web.page.TableDataInfo;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.ListUtils;
 
 /**
  * 影视管理Controller
- * 
+ *
  * @author wkk
  * @date 2025-02-01
  */
 @Controller
 @RequestMapping("/front/film")
-public class DsFilmController extends BaseController
-{
+public class DsFilmController extends BaseController {
     private String prefix = "front/film";
 
     @Autowired
@@ -36,8 +38,7 @@ public class DsFilmController extends BaseController
 
     @RequiresPermissions("front:film:view")
     @GetMapping()
-    public String film()
-    {
+    public String film() {
         return prefix + "/film";
     }
 
@@ -47,8 +48,7 @@ public class DsFilmController extends BaseController
     @RequiresPermissions("front:film:list")
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(DsFilm dsFilm)
-    {
+    public TableDataInfo list(DsFilm dsFilm) {
         startPage();
         List<DsFilm> list = dsFilmService.selectDsFilmList(dsFilm);
         return getDataTable(list);
@@ -61,8 +61,7 @@ public class DsFilmController extends BaseController
     @Log(title = "影视管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ResponseBody
-    public AjaxResult export(DsFilm dsFilm)
-    {
+    public AjaxResult export(DsFilm dsFilm) {
         List<DsFilm> list = dsFilmService.selectDsFilmList(dsFilm);
         ExcelUtil<DsFilm> util = new ExcelUtil<DsFilm>(DsFilm.class);
         return util.exportExcel(list, "影视管理数据");
@@ -72,8 +71,7 @@ public class DsFilmController extends BaseController
      * 新增影视管理
      */
     @GetMapping("/add")
-    public String add()
-    {
+    public String add() {
         return prefix + "/add";
     }
 
@@ -84,8 +82,7 @@ public class DsFilmController extends BaseController
     @Log(title = "影视管理", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
-    public AjaxResult addSave(DsFilm dsFilm)
-    {
+    public AjaxResult addSave(DsFilm dsFilm) {
         return toAjax(dsFilmService.insertDsFilm(dsFilm));
     }
 
@@ -94,8 +91,7 @@ public class DsFilmController extends BaseController
      */
     @RequiresPermissions("front:film:edit")
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, ModelMap mmap)
-    {
+    public String edit(@PathVariable("id") Long id, ModelMap mmap) {
         DsFilm dsFilm = dsFilmService.selectDsFilmById(id);
         mmap.put("dsFilm", dsFilm);
         return prefix + "/edit";
@@ -108,8 +104,7 @@ public class DsFilmController extends BaseController
     @Log(title = "影视管理", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
-    public AjaxResult editSave(DsFilm dsFilm)
-    {
+    public AjaxResult editSave(DsFilm dsFilm) {
         return toAjax(dsFilmService.updateDsFilm(dsFilm));
     }
 
@@ -118,30 +113,30 @@ public class DsFilmController extends BaseController
      */
     @RequiresPermissions("front:film:remove")
     @Log(title = "影视管理", businessType = BusinessType.DELETE)
-    @PostMapping( "/remove")
+    @PostMapping("/remove")
     @ResponseBody
-    public AjaxResult remove(String ids)
-    {
+    public AjaxResult remove(String ids) {
         return toAjax(dsFilmService.deleteDsFilmByIds(ids));
     }
 
 
     /**
      * 获取推荐影视
+     *
      * @return
      */
-    @GetMapping( "/getRecommendFilm")
+    @GetMapping("/getRecommendFilm")
     @ResponseBody
-    public List<DsFilm> getRecommendFilm(@RequestParam("id") String id){
+    public List<DsFilm> getRecommendFilm(@RequestParam("id") String id) {
         DsFilm dsFilm = new DsFilm();
         dsFilm.setChronologicalDivision(id);
         dsFilm.setRecommend(1L);
         ArrayList<DsFilm> moreDsFilms = new ArrayList<>();
         List<DsFilm> dsFilms = dsFilmService.selectDsFilmList(dsFilm);
         //让前端无限连续轮播
-        for (int i = 0; i < 999; i++) {
+        for (int i = 0; i < 99; i++) {
             moreDsFilms.addAll(dsFilms);
-            if(moreDsFilms.size()>9999){
+            if (moreDsFilms.size() > 999) {
                 break;
             }
         }
@@ -149,54 +144,58 @@ public class DsFilmController extends BaseController
     }
 
 
-
     @PostMapping("/selectFilm")
     @ResponseBody
-    public  List<DsFilm>  selectFilm(DsFilmFrom dsFilm)
-    {
+    public List<DsFilm> selectFilm(DsFilmFrom dsFilm) {
 
 
         System.out.println(dsFilm.toString());
-
-
         DsFilm dsFilm1 = new DsFilm();
+
+
         List<String> shiq = new ArrayList<>();
+        List<String> kinds = new ArrayList<>();
         dsFilm1.setTvSeries(dsFilm.getKeyword()); // 名称影视
-        shiq.addAll(dsFilm.getPeriods());
 
-        if("电影".equals(dsFilm.getFilmType())){
-            //电影
-            dsFilm1.setKind("0");
 
-        }else {
-            dsFilm1.setKind("1");
+
+        if(!ListUtils.isEmpty(dsFilm.getPeriods())){
+            shiq.addAll(dsFilm.getPeriods());
         }
 
 
-        List<DsFilm> list = dsFilmService.selectDsFilmListOfNew(dsFilm1,shiq);
+        if(!ListUtils.isEmpty(dsFilm.getFilmType())){
+            kinds.addAll(dsFilm.getFilmType());
+        }
+
+
+
+
+//        if("电影".equals(dsFilm.getFilmType())){
+//            //电影
+//            dsFilm1.setKind("0");
+//
+//        }else {
+//            dsFilm1.setKind("1");
+//        }
+
+
+        List<DsFilm> list = dsFilmService.selectDsFilmListOfNew(dsFilm1, kinds, shiq);
         return list;
     }
 
 
-
-
-
     @GetMapping("/importTemplate")
     @ResponseBody
-    public AjaxResult importTemplate()
-    {
+    public AjaxResult importTemplate() {
         ExcelUtil<DsFilm> util = new ExcelUtil<DsFilm>(DsFilm.class);
         return util.importTemplateExcel("影视数据");
     }
 
 
-
-
-
     @PostMapping("/importData")
     @ResponseBody
-    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
-    {
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DsFilm> util = new ExcelUtil<DsFilm>(DsFilm.class);
         List<DsFilm> userList = util.importExcel(file.getInputStream());
         String message = dsFilmService.importUser(userList, updateSupport);
@@ -204,31 +203,32 @@ public class DsFilmController extends BaseController
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    class DsFilmFrom{
-        private String filmType;
+    class DsFilmFrom {
+        private List<String> filmType;
 
 
         private String keyword;
-        private List<String > periods;
+        private List<String> periods;
 
 
-        public String getFilmType() {
-            return filmType;
+        public List<String> getFilmType() {
+
+            if (filmType == null) {
+                filmType = new ArrayList<>();
+            }
+
+//            @Excel(name = "影视分类", readConverterExp = "0=电影,1=电视剧")
+            List<String> list = filmType.stream().map(s -> {
+                if ("电视剧".equals(s)) {
+                    return "1";
+                }else {
+                    return "0";
+                }
+            }).toList();
+            return list;
         }
 
-        public void setFilmType(String filmType) {
+        public void setFilmType(List<String> filmType) {
             this.filmType = filmType;
         }
 
@@ -248,7 +248,6 @@ public class DsFilmController extends BaseController
             this.periods = periods;
         }
     }
-
 
 
 }

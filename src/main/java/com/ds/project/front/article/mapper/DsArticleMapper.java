@@ -27,6 +27,10 @@ public interface DsArticleMapper
      */
     public List<DsArticle> selectDsArticleList(DsArticle dsArticle);
 
+
+    public List<DsArticle> selectDsArticleListOfUserSite(DsArticle dsArticle);
+
+
     /**
      * 新增文章管理
      * 

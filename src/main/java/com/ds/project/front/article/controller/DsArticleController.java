@@ -3,6 +3,7 @@ package com.ds.project.front.article.controller;
 import java.util.List;
 
 import com.ds.framework.web.domain.BaseEntity;
+import com.ds.project.front.article.mapper.DsArticleMapper;
 import com.ds.project.system.user.domain.User;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,10 @@ public class DsArticleController extends BaseController
 
     @Autowired
     private IDsArticleService dsArticleService;
+
+
+    @Autowired
+    private DsArticleMapper dsArticleMapper;
 
     @RequiresPermissions("front:article:view")
     @GetMapping()
@@ -156,13 +161,12 @@ public class DsArticleController extends BaseController
         if("0,0".equals(key)){
             // 全文
             // 字段：全文，关键字，提名，，摘要
-
-
             if(StringUtils.hasText(text)){
                 dsArticle.setArticleText(text);
                 dsArticle.setKeyword(text);
                 dsArticle.setTitle(text);
                 dsArticle.setSummary(text);
+                dsArticle.setFullTextWords(text);
             }
         } else if ("1,1".equals(key)){
             // 标题
@@ -179,7 +183,7 @@ public class DsArticleController extends BaseController
         
 
         startPage();
-        List<DsArticle> list = dsArticleService.selectDsArticleList(dsArticle);
+        List<DsArticle> list = dsArticleMapper.selectDsArticleListOfUserSite(dsArticle);
         return getDataTable(list);
     }
 

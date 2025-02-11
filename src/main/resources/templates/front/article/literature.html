@@ -39,7 +39,7 @@
             <!-- 搜索框 -->
             <div style="display: flex; justify-content: center; margin-top: 30px;">
                 <div class="search"
-                     style="min-width: 500px; max-width: 800px; border: 2px solid white; display: flex; border-radius: 19px 19px 19px 19px">
+                     style="min-width: 800px; max-width: 800px; border: 2px solid white; display: flex; border-radius: 19px 19px 19px 19px">
                     <select style="display: inline; padding-left: 4px; width: 72px; border-radius: 15px 0 0 15px; border: none; outline: none"
                             name="key" id="searchKeySelect">
                         <option style="display: inline" value="0" th:selected="${searchKey == '0'}">全文</option>
@@ -63,7 +63,7 @@
 
 
         <!-- 表格 -->
-        <div  style="padding-left:200px;padding-right: 200px;padding-top: 50px;">
+        <div  style="padding-left:50px;padding-right: 50px;padding-top: 50px;">
             <div class="container-div">
                 <div class="row">
                     <div class="col-sm-12 select-table table-striped">
@@ -166,11 +166,25 @@
                     formatter: function (value, row, index) {
                         // 创建一个带有点击事件的 a 标签
                         return '<a href="javascript:void(0);" onclick="goToArticleDetail(\'' + row.id + '\')">' + value + '</a>';
+                    },
+                    cellStyle: function (value, row, index) {
+                        return {
+                            css: {
+                                'white-space': 'nowrap'
+                            }
+                        };
                     }
                 },
                 {
                     field: 'author',
-                    title: '作者'
+                    title: '作者',
+                    cellStyle: function (value, row, index) {
+                        return {
+                            css: {
+                                'white-space': 'nowrap'
+                            }
+                        };
+                    }
                 },
                 {
                     field: 'organ',
@@ -178,7 +192,14 @@
                 },
                 {
                     field: 'source',
-                    title: '文献来源'
+                    title: '文献来源',
+                    cellStyle: function (value, row, index) {
+                        return {
+                            css: {
+                                'white-space': 'nowrap'
+                            }
+                        };
+                    }
                 },
                 {
                     field: 'keyword',
@@ -194,9 +215,16 @@
                     formatter: function(value, row, index) {
                         // 如果 articleText 有值，则创建一个 a 标签链接
                         if (value) {
-                            return '<a href="' + value + '" target="_blank">点击跳转..</a>';
+                            return '<a href="' + value + '" target="_blank">跳转链接</a>';
                         }
                         return '';
+                    },
+                    cellStyle: function (value, row, index) {
+                        return {
+                            css: {
+                                'white-space': 'nowrap'
+                            }
+                        };
                     }
                 },
                 {
@@ -372,7 +400,7 @@
 
     .menu {
         color: white;
-        font-size: 20px;
+        font-size: 30px;
         background-color: rgba(0, 0, 0, 0.2);
         position: fixed;
         width: 100%;

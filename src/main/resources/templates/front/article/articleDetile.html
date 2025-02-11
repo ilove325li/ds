@@ -11,62 +11,51 @@
 
 <body>
 
-<div style="padding: 20%;margin-top: -10%;background-color: #e6a44c">
 
+<div style="display: flex;justify-content: center;align-items: center;background-color: #e6a44c;height: 100%">
 
+    <div style="background-color: white;width: 90%;height: 90%;display: flex;;;justify-content: center;">
 
-<div>
-    <span style="font-size: 17px;font-weight: bold">来源：</span><span th:text="${dsArticle.srcDatabase}"></span>
-</div>
+        <div style="width: 80%;">
+            <button style="margin: 10px;display: block; position: absolute;right: 11%;top: 10%; padding: 10px 20px; background-color: #a55200; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="goBack()">返回上一页</button>
+            <div style="margin-top: 5%">
+            <div style="font-size: 30px;">
+                <span style="font-weight: bold">来源：</span><span
+                    th:text="${dsArticle.srcDatabase}"></span>
+            </div>
+            <div style="display: flex;align-items: center;justify-content: center;font-size: 25px"><h1
+                    th:text="${dsArticle.title}"></h1></div>
+            <div style="display: flex;align-items: center;justify-content: center;font-size: 22px;"><span
+                    style=";font-weight: bold"> 作者：</span><span th:text="${dsArticle.author}"></span>
+            </div>
+            <div style="font-size: 25px;font-weight: bold">摘要：</div>
+            <p style="font-size: 22px;letter-spacing: 3px;line-height: 1.6; text-indent: 2em;" th:text="${dsArticle.summary}">
 
-    <div style="display: flex;align-items: center;justify-content: center;"><h1 th:text="${dsArticle.title}"></h1></div>
-    <div style="display: flex;align-items: center;justify-content: center;"><span style="font-size: 17px;font-weight: bold"> 作者：</span><span th:text="${dsArticle.author}"></span></div>
-    <h2>摘要：</h2>
-    <p th:text="${dsArticle.summary}">
+            </p>
 
-    </p>
+            <span style="font-size: 20px;font-weight: bold">关键词：</span><span style="font-size: 20px;" th:text="${dsArticle.keyword}"></span>
 
+            <div style="margin-top: 10px;font-size: 20px;">
+                <span style="font-size: 20px;font-weight: bold">发表日期：</span><span
+                    th:text="${dsArticle.pubTime}"></span>
 
-    <span style="font-size: 17px;font-weight: bold">关键词：</span><span th:text="${dsArticle.keyword}"></span>
+            </div>
 
-
-<!--    <p>东；人民军队；军事思想；座谈会；</p>-->
-<div style="margin-top: 10px">
-    <span style="font-size: 17px;font-weight: bold">发表日期：</span><span th:text="${dsArticle.pubTime}"></span>
-
-</div>
-
-<!--    <button @click="getTonewPage(dsArticle.articleText})">跳转页面</button>-->
-
-
-<!--    <div>-->
-<!--        <a th:href="${dsArticle.articleText}">跳转页面</a>-->
-<!--    </div>-->
-
-
-    <div style="margin-top: 10px">
-        <span style="font-size: 17px;font-weight: bold">链接：</span>  <a th:href="${dsArticle.articleText}" target="_blank">链接跳转</a>
-
+            <div style="margin-top: 10px;font-size: 20px;">
+                <span style="font-size: 20px;font-weight: bold">链接：</span> <a th:href="${dsArticle.articleText}"
+                                                                                target="_blank">链接跳转</a>
+            </div>
+        </div></div>
     </div>
-<!--<div >：  <span th:text="${dsArticle.articleText}"></span></div>-->
-
-
 </div>
-
-
-
-
-
-
-
-
-
 
 
 </body>
 <script>
-
-
+    // 定义返回上一页的函数
+    function goBack() {
+        window.history.back();
+    }
 
     // function getTonewPage (url){
     //     alert(url)

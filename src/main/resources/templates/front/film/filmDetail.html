@@ -28,21 +28,25 @@
 </head>
 
 <body>
-<div style="background-color: #ba8034;height: 100%">
-<div style="background-color: #ba8034;">
+<div style="height: 100%;width: 100%;display: flex;align-items: center;background-color: #ba8034;">
+<div style="background-color: #ba8034; display: flex;height: 70%;align-items: center;justify-content: center;;padding-bottom: 0%;padding-left: 5%;padding-right: 5%">
+
+
+<div style="">
+<div style="background-color: white; ">
 <!--    <a href="https://www.baidu.com/">跳转百度</a>-->
     <div style="padding: 5%;padding-top: 1%;">
 
-        <div style="margin-left: -2%;display: flex;position: relative;width: 100%;align-items: center;">
-            <h1 th:if="${dsFilm.kind eq '0'}">电影</h1>
-            <h1 th:if="${dsFilm.kind eq '1'}">电视剧</h1>
+        <div style="margin:0;margin-left: -2%;display: flex;position: relative;width: 100%;align-items: center;font-size: 20px;margin-top: 0.5%;margin-bottom: 0.5%">
+            <h2 th:if="${dsFilm.kind eq '0'}">电影</h2>
+            <h2 th:if="${dsFilm.kind eq '1'}">电视剧</h2>
             <button style="margin: 10px;display: block; position: absolute;right: 7%; padding: 10px 20px; background-color: #a55200; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="goBack()">返回上一页</button>
         </div>
-        <h3>
+        <h1 style="margin: 0;margin-bottom: 1%;font-size: 45px">
             <span th:text="${dsFilm.tvSeries}"></span>
-            (<span style="color: rgba(48,47,47,0.91)" th:text="${#dates.format(dsFilm.annual, 'yyyy')}"></span>)
-        </h3>
-        <div style="display: flex">
+            <span style="color: #8e8e8e">   (<span th:text="${#dates.format(dsFilm.annual, 'yyyy')}"></span>)</span>
+        </h1>
+        <div style="display: flex;font-size: 25px">
             <img th:src="@{${dsFilm.img}}" alt="加载中...">
             <div style="margin-left: 20px;color: rgba(48,47,47,0.91)">
                 <div style="padding-top: 0px;">导演：<span style="color:#000;" th:text="${dsFilm.director}"></span></div>
@@ -61,8 +65,8 @@
                 </div>
             </div>
         </div>
-        <h3>剧情简介：</h3>
-        <div style="width: 60%">
+        <h3 style="font-size: 22px">剧情简介：</h3>
+        <div style="width: 100%;letter-spacing: 3px;line-height: 6px;font-size: 18px">
             <p style="line-height: 1.6; text-indent: 2em;color: #000000" th:text="${dsFilm.topicContent}"></p>
         </div>
 
@@ -73,9 +77,10 @@
         </div>
 
     </div>
-</div>
-</div>
+</div></div>
 
+</div>
+</div>
 
 
 

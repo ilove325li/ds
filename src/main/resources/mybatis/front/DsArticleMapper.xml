@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ds.project.front.article.mapper.DsArticleMapper">
-    
+
     <resultMap type="DsArticle" id="DsArticleResult">
         <result property="id"    column="id"    />
         <result property="srcDatabase"    column="srcDatabase"    />
@@ -15,10 +15,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="summary"    column="summary"    />
         <result property="pubTime"    column="pubTime"    />
         <result property="articleText"    column="articleText"    />
+        <result property="fullTextWords"    column="full_text_words"    />
     </resultMap>
 
     <sql id="selectDsArticleVo">
-        select id, srcDatabase, title, author, organ, source, keyword, summary, pubTime, articleText from ds_article
+        select id, srcDatabase, title, author, organ, source, keyword, summary, pubTime, articleText, full_text_words from ds_article
     </sql>
 
     <select id="selectDsArticleList" parameterType="DsArticle" resultMap="DsArticleResult">
@@ -37,7 +38,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
 
-
+    <select id="selectDsArticleListOfUserSite" parameterType="DsArticle" resultMap="DsArticleResult">
+        <include refid="selectDsArticleVo"/>
+        <where>
+            <if test="srcDatabase != null  and srcDatabase != ''"> or srcDatabase like concat('%', #{srcDatabase}, '%')</if>
+            <if test="title != null  and title != ''"> or title like concat('%', #{title}, '%')</if>
+            <if test="author != null  and author != ''"> or author like concat('%', #{author}, '%')</if>
+            <if test="organ != null  and organ != ''"> or organ like concat('%', #{organ}, '%')</if>
+            <if test="source != null  and source != ''"> or source like concat('%', #{source}, '%')</if>
+            <if test="keyword != null  and keyword != ''"> or keyword like concat('%', #{keyword}, '%')</if>
+            <if test="summary != null  and summary != ''"> or summary like concat('%', #{summary}, '%')</if>
+            <if test="pubTime != null "> and pubTime = #{pubTime}</if>
+            <if test="articleText != null  and articleText != ''"> or articleText like concat('%', #{articleText}, '%')</if>
+            <if test="fullTextWords != null  and fullTextWords != ''"> or full_text_words like concat('%', #{fullTextWords}, '%')</if>
+        </where>
+    </select>
 
 
     
