@@ -1,6 +1,12 @@
 package com.ds.project.front.article.service.impl;
 
 import java.util.List;
+
+import com.ds.common.exception.ServiceException;
+import com.ds.common.utils.StringUtils;
+import com.ds.common.utils.bean.BeanValidators;
+import com.ds.common.utils.security.ShiroUtils;
+import com.ds.project.system.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ds.project.front.article.mapper.DsArticleMapper;
@@ -90,5 +96,19 @@ public class DsArticleServiceImpl implements IDsArticleService
     public int deleteDsArticleById(Long id)
     {
         return dsArticleMapper.deleteDsArticleById(id);
+    }
+
+    @Override
+    public String importUser(List<DsArticle> userList, boolean updateSupport)   {
+        if (StringUtils.isNull(userList) || userList.size() == 0)
+        {
+            throw new ServiceException("导入用户数据不能为空！");
+        }
+
+        for (DsArticle dsArticle : userList){
+            dsArticleMapper.insertDsArticle(dsArticle);
+        }
+
+        return "导入完毕！";
     }
 }

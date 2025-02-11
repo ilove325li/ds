@@ -62,4 +62,6 @@ public interface IDsFilmService
     public int deleteDsFilmById(Long id);
 
     List<DsFilm> selectDsFilmListOfNew(DsFilm dsFilm,List<String> shiqi);
+
+    String importUser(List<DsFilm> userList, boolean updateSupport);
 }

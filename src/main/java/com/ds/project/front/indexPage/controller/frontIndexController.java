@@ -53,7 +53,7 @@ public class frontIndexController {
      * @return
      */
     @GetMapping("/front/goToliterature")
-    private String goToliterature(Model model, @RequestParam(value = "searchTerms" ,defaultValue = "  ") String searchTerms, @RequestParam("key") String searchKey) {
+    private String goToliterature(Model model, @RequestParam(value = "searchTerms" ,defaultValue = "") String searchTerms, @RequestParam("key") String searchKey) {
         model.addAttribute("literature",searchTerms );
         model.addAttribute("searchKey",searchKey );
         return "front/article/literature";

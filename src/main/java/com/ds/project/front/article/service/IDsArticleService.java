@@ -2,6 +2,7 @@ package com.ds.project.front.article.service;
 
 import java.util.List;
 import com.ds.project.front.article.domain.DsArticle;
+import com.ds.project.system.user.domain.User;
 
 /**
  * 文章管理Service接口
@@ -58,4 +59,6 @@ public interface IDsArticleService
      * @return 结果
      */
     public int deleteDsArticleById(Long id);
+
+    String importUser(List<DsArticle> userList, boolean updateSupport);
 }

@@ -3,6 +3,7 @@ package com.ds.project.front.article.controller;
 import java.util.List;
 
 import com.ds.framework.web.domain.BaseEntity;
+import com.ds.project.system.user.domain.User;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import com.ds.framework.web.controller.BaseController;
 import com.ds.framework.web.domain.AjaxResult;
 import com.ds.common.utils.poi.ExcelUtil;
 import com.ds.framework.web.page.TableDataInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 文章管理Controller
@@ -132,8 +134,10 @@ public class DsArticleController extends BaseController
 
     @PostMapping("/selectArticle")
     @ResponseBody
-    public TableDataInfo selectArticle(@RequestParam("text") String text,@RequestParam("key") String key )
+    public TableDataInfo selectArticle(String searchTerms,String key )
     {
+
+        String text =searchTerms;
 
         System.out.println(text);
         System.out.println(key);
@@ -180,5 +184,35 @@ public class DsArticleController extends BaseController
     }
 
 
+
+
+
+
+
+
+
+
+
+    @GetMapping("/importTemplate")
+    @ResponseBody
+    public AjaxResult importTemplate()
+    {
+        ExcelUtil<DsArticle> util = new ExcelUtil<DsArticle>(DsArticle.class);
+        return util.importTemplateExcel("文章数据");
+    }
+
+
+
+
+
+    @PostMapping("/importData")
+    @ResponseBody
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<DsArticle> util = new ExcelUtil<DsArticle>(DsArticle.class);
+        List<DsArticle> userList = util.importExcel(file.getInputStream());
+        String message = dsArticleService.importUser(userList, updateSupport);
+        return AjaxResult.success(message);
+    }
 
 }

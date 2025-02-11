@@ -19,7 +19,7 @@
             justify-content: center;
             align-items: center;">
             <div class="goToMyPage" data-target="homepage" @click="getoHome()"> 首页</div>
-            <div @click="goToliterature('  ')">文献数据库</div>
+            <div @click="goToliterature('')">文献数据库</div>
             <div @click="goToFilmDate()">影视信息库</div>
             <div>关于我们</div>
         </div>
@@ -50,11 +50,11 @@
                     </div>
                     <div style="margin-left: 40px;border-left: 2px solid #0b0b0b;padding-left: 50px">
                         <!-- 使用 v-model 绑定复选框的值 -->
+                        <input style="margin-left: 20px" type="checkbox" value="4" v-model="selectedPeriods">伟大建党精神
                         <input style="margin-left: 0px" type="checkbox" value="0" v-model="selectedPeriods">新民主主义革命时期
                         <input style="margin-left: 20px" type="checkbox" value="1" v-model="selectedPeriods">社会主义革命和建设时期
                         <input style="margin-left: 20px" type="checkbox" value="2" v-model="selectedPeriods">改革开放和社会主义现代化建设新时期
                         <input style="margin-left: 20px" type="checkbox" value="3" v-model="selectedPeriods">中国特色社会主义新时代
-                        <input style="margin-left: 20px" type="checkbox" value="4" v-model="selectedPeriods">伟大建党精神
                     </div>
                 </div>
             </form>
@@ -62,7 +62,7 @@
 
 
         <!-- 影视列表 -->
-        <div style="padding-right: 10%;padding-left: 10%;background-color: #ffffff ;height: 550px;overflow-y: scroll">
+        <div style="padding-right: 10%;padding-left: 10%;background-color: #ffffff ;height: 60%;overflow-y: scroll">
             <div style=" display: flex;     flex-wrap: wrap;gap: 20px; ">
                 <div v-for="(item, index) in selectFilmDate"
                      style="color: black;box-shadow: 20px 20px 10px rgba(0, 0, 0, 0.3);margin-right: 40px">

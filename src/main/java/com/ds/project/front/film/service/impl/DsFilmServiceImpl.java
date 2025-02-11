@@ -1,6 +1,12 @@
 package com.ds.project.front.film.service.impl;
 
 import java.util.List;
+
+import com.ds.common.exception.ServiceException;
+import com.ds.common.utils.StringUtils;
+import com.ds.framework.web.service.DictService;
+import com.ds.project.front.article.domain.DsArticle;
+import com.ds.project.system.dict.service.IDictDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ds.project.front.film.mapper.DsFilmMapper;
@@ -19,7 +25,8 @@ public class DsFilmServiceImpl implements IDsFilmService
 {
     @Autowired
     private DsFilmMapper dsFilmMapper;
-
+    @Autowired
+    private DictService dictService;
     /**
      * 查询影视管理
      * 
@@ -96,5 +103,28 @@ public class DsFilmServiceImpl implements IDsFilmService
     public List<DsFilm> selectDsFilmListOfNew(DsFilm dsFilm, List<String> shiqi) {
         List<DsFilm> dsFilms = dsFilmMapper.selectDsFilmListOfNew(dsFilm, shiqi);
         return dsFilmMapper.selectDsFilmListOfNew( dsFilm,  shiqi);
+    }
+
+    @Override
+    public String importUser(List<DsFilm> userList, boolean updateSupport) {
+        if (StringUtils.isNull(userList) || userList.size() == 0)
+        {
+            throw new ServiceException("导入用户数据不能为空！");
+        }
+
+
+int rowNum = 1;
+        for (DsFilm dsFilm : userList){
+
+            if(!org.springframework.util.StringUtils.hasText(dsFilm.getChronologicalDivision())){
+                throw new RuntimeException(rowNum+",年代划分是必填的");
+            }
+
+            dsFilm.setImg(null);
+            dsFilmMapper.insertDsFilm(dsFilm);
+            rowNum++;
+        }
+
+        return "导入完毕！";
     }
 }

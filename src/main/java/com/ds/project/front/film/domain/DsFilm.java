@@ -30,7 +30,7 @@ public class DsFilm extends BaseEntity
     private Long id;
 
     /** 年度（以播出时间为准） */
-    @Excel(name = "年度", readConverterExp = "以=播出时间为准")
+    @Excel(name = "年度")
     private Date annual;
 
     /** 电视剧 */
@@ -46,7 +46,7 @@ public class DsFilm extends BaseEntity
     private String topicContent;
 
     /** 影视类型（0谍战、1悬疑、2刑侦、3历史、4古装、5武侠、6军旅、7战争、8喜剧、9青春、10言情、11偶像、12家庭、13年代、14革命、15农村、16都市、17其他、18传记、19剧情） */
-    @Excel(name = "影视类型", readConverterExp = "0=谍战、1悬疑、2刑侦、3历史、4古装、5武侠、6军旅、7战争、8喜剧、9青春、10言情、11偶像、12家庭、13年代、14革命、15农村、16都市、17其他、18传记、19剧情")
+    @Excel(name = "影视类型", readConverterExp = "0=谍战,1=悬疑,2=刑侦,3=历史,4=古装,5=武侠,6=军旅,7=战争,8=喜剧,9=青春,10=言情,11=偶像,12=家庭,13=年代,14=革命,15=农村,16=都市,17=其他,18=传记,19=剧情")
     private String type;
 
     /** 导演 */
@@ -58,19 +58,19 @@ public class DsFilm extends BaseEntity
     private String screenwriter;
 
     /** 主要演员（酌情保留4-5人） */
-    @Excel(name = "主要演员", readConverterExp = "酌=情保留4-5人")
+    @Excel(name = "主要演员")
     private String actor;
 
     /** 集数（以电视首播版本为准） */
-    @Excel(name = "集数", readConverterExp = "以=电视首播版本为准")
+    @Excel(name = "集数")
     private Long episodeNum;
 
     /** 提名理由（基础：2024年4月17日版本（奖项修改）现状：2024年5月7日版本（说明：蓝色内容为核实无误内容；黄色内容为新增、修正和删除「见删除线」内容；红色为「无主流奖项获奖情况」） */
-    @Excel(name = "提名理由", readConverterExp = "基=础：2024年4月17日版本（奖项修改")
+    @Excel(name = "提名理由")
     private String reasons;
 
     /** 年代划分 */
-    @Excel(name = "年代划分")
+    @Excel(name = "年代划分",readConverterExp = "0=新民主主义革命时期,1=社会主义革命和建设时期,2=改革开放和社会主义现代化建设新时期,3=中国特色社会主义新时代,4=伟大建党精神")
     private String chronologicalDivision;
 
     /** 链接 */
@@ -82,7 +82,7 @@ public class DsFilm extends BaseEntity
     private String kind;
 
     /** 是否推荐（0否，1是） */
-    @Excel(name = "是否推荐", readConverterExp = "0=否，1是")
+    @Excel(name = "是否推荐", readConverterExp = "0=否,1=是")
     private Long recommend;
 
     public void setId(Long id)

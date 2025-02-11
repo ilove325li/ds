@@ -2,6 +2,8 @@ package com.ds.project.front.film.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.ds.project.front.article.domain.DsArticle;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,7 @@ import com.ds.framework.web.controller.BaseController;
 import com.ds.framework.web.domain.AjaxResult;
 import com.ds.common.utils.poi.ExcelUtil;
 import com.ds.framework.web.page.TableDataInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 影视管理Controller
@@ -178,6 +181,27 @@ public class DsFilmController extends BaseController
 
 
 
+    @GetMapping("/importTemplate")
+    @ResponseBody
+    public AjaxResult importTemplate()
+    {
+        ExcelUtil<DsFilm> util = new ExcelUtil<DsFilm>(DsFilm.class);
+        return util.importTemplateExcel("影视数据");
+    }
+
+
+
+
+
+    @PostMapping("/importData")
+    @ResponseBody
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<DsFilm> util = new ExcelUtil<DsFilm>(DsFilm.class);
+        List<DsFilm> userList = util.importExcel(file.getInputStream());
+        String message = dsFilmService.importUser(userList, updateSupport);
+        return AjaxResult.success(message);
+    }
 
 
 
@@ -224,8 +248,6 @@ public class DsFilmController extends BaseController
             this.periods = periods;
         }
     }
-
-
 
 
 

@@ -18,7 +18,7 @@
             align-items: center;">
             <div class="goToMyPage" data-target="homepage" @click="getoHome()"> 首页</div>
             <div>文献数据库</div>
-            <div  @click="goToFilmDate()">影视信息库</div>
+            <div @click="goToFilmDate()">影视信息库</div>
             <div>关于我们</div>
         </div>
     </div>
@@ -33,36 +33,37 @@
         </div>
 
 
-
         <form id="formId">
 
 
-
-                        <!-- 搜索框 -->
+            <!-- 搜索框 -->
             <div style="display: flex; justify-content: center; margin-top: 30px;">
-                <div class="search" style="min-width: 500px; max-width: 800px; border: 2px solid white; display: flex; border-radius: 19px 19px 19px 19px">
-                    <select style="display: inline; padding-left: 4px; width: 72px; border-radius: 15px 0 0 15px; border: none; outline: none" name="key">
+                <div class="search"
+                     style="min-width: 500px; max-width: 800px; border: 2px solid white; display: flex; border-radius: 19px 19px 19px 19px">
+                    <select style="display: inline; padding-left: 4px; width: 72px; border-radius: 15px 0 0 15px; border: none; outline: none"
+                            name="key" id="searchKeySelect">
                         <option style="display: inline" value="0" th:selected="${searchKey == '0'}">全文</option>
                         <option style="display: inline" value="1" th:selected="${searchKey == '1'}">标题</option>
                         <option style="display: inline" value="2" th:selected="${searchKey == '2'}">关键字</option>
                     </select>
-                    <input style="border: none; outline: none" placeholder="请输入..." id="keywordInput" name="searchTerms" type="text">
-                    <div style="width:72px" id="loadPapersBtn">
-                        <button style="width:72px; border: none; outline: none" type="submit" onclick="selectArticle()"></button>
+                    <input style="border: none; outline: none" placeholder="请输入..." id="keywordInput"
+                           name="searchTerms" type="text">
+                    <div style="width:72px;" id="loadPapersBtn">
+                        <!--                        <button style="width:72px; border: none; outline: none"  onclick="selectArticle()"></button>-->
+                        <div style="" class="selectButten" onclick="$.table.search()">搜索</div>
                     </div>
                 </div>
             </div>
 
 
-
-                        <!--                        <input  class="time-input" placeholder="请选择年度" name="annual"  type="hidden"/>-->
+            <!--                        <input  class="time-input" placeholder="请选择年度" name="annual"  type="hidden"/>-->
 
 
         </form>
 
 
         <!-- 表格 -->
-        <div v-if="isShowTable" style="padding-left:200px;padding-right: 200px;padding-top: 50px;">
+        <div  style="padding-left:200px;padding-right: 200px;padding-top: 50px;">
             <div class="container-div">
                 <div class="row">
                     <div class="col-sm-12 select-table table-striped">
@@ -94,25 +95,24 @@
 
     // $(function () {
 
-        // 获取输入框元素
-        var inputElement = document.getElementById('keywordInput');
-        // 给输入框赋值
+    // 获取输入框元素
+    var inputElement = document.getElementById('keywordInput');
+    // 给输入框赋值
 
-        // console.log('输入框当前值:', inputElement);
+    // console.log('输入框当前值:', inputElement);
 
-        // if('notValue' === literature){
-        //     inputElement.value = "literature";
-        // }
+    // if('notValue' === literature){
+    //     inputElement.value = "literature";
+    // }
 
 
-
-        // 获取目标 div 元素
-        var targetDiv = document.getElementById('targetDiv');
-        // 判断 literature 是否不为 null
-        if (literature !== undefined && literature !== ' ') {
-            // 修改 padding-top 样式
-            targetDiv.style.paddingTop = '5%';
-        }
+    // 获取目标 div 元素
+    var targetDiv = document.getElementById('targetDiv');
+    // 判断 literature 是否不为 null
+    if (literature !== undefined && literature !== ' ') {
+        // 修改 padding-top 样式
+        targetDiv.style.paddingTop = '5%';
+    }
     // });
 
 
@@ -128,22 +128,34 @@
     }
 
 
-
-
-
     $(function () {
+
+
+
+        // 获取输入框元素
+        var inputElement = document.getElementById('keywordInput');
+        // 给输入框赋值
+        inputElement.value = literature;
+
+        // 获取目标 div 元素
+        var targetDiv = document.getElementById('targetDiv');
+        // 判断 literature 是否不为 null
+        if (literature !== null && literature !== '') {
+            // 修改 padding-top 样式
+            targetDiv.style.paddingTop = '5%';
+        }
+
+
         var options = {
-            url: prefix + "/selectArticle?text="+literature+"&"+"key="+searchKey,
-            // showFooter: true,
-            // showSearch: false,
-            // showRefresh: false,
-            // showToggle: false,
-            // showColumns: false,
-            // footerStyle: footerStyle,
+            url: prefix + "/selectArticle?text=" + literature + "&" + "key=" + searchKey,
+            showSearch: false, // 隐藏搜索框
+            showRefresh: false, // 隐藏刷新按钮
+            showToggle: false, // 隐藏视图切换按钮
+            showColumns: false, // 隐藏列选择按钮
             columns: [
-            //     {
-            //     checkbox: true
-            // },
+                //     {
+                //     checkbox: true
+                // },
                 {
                     field: 'srcDatabase',
                     title: '来源库'
@@ -178,7 +190,14 @@
                 },
                 {
                     field: 'articleText',
-                    title: '链接'
+                    title: '链接',
+                    formatter: function(value, row, index) {
+                        // 如果 articleText 有值，则创建一个 a 标签链接
+                        if (value) {
+                            return '<a href="' + value + '" target="_blank">点击跳转..</a>';
+                        }
+                        return '';
+                    }
                 },
                 {
                     field: 'pubTime',
@@ -188,26 +207,6 @@
         };
         $.table.init(options);
 
-
-
-
-
-
-
-
-
-        // 获取输入框元素
-        var inputElement = document.getElementById('keywordInput');
-        // 给输入框赋值
-        inputElement.value = literature;
-
-        // 获取目标 div 元素
-        var targetDiv = document.getElementById('targetDiv');
-        // 判断 literature 是否不为 null
-        if (literature !== null && literature !== '') {
-            // 修改 padding-top 样式
-            targetDiv.style.paddingTop = '5%';
-        }
     });
 
     function footerStyle(column) {
@@ -221,91 +220,72 @@
         }[column.field]
     }
 
+    function selectArticle() {
+        // 获取 select 元素的值
+        var searchKey = document.getElementById('searchKeySelect').value;
+        // 获取 input 元素的值
+        var searchTerms = document.getElementById('keywordInput').value;
 
-    // function selectArticle(){
-    //     var options = {
-    //         url: prefix + "/selectArticle",
-    //         // showFooter: true,
-    //         // showSearch: false,
-    //         // showRefresh: false,
-    //         // showToggle: false,
-    //         // showColumns: false,
-    //         // footerStyle: footerStyle,
-    //         columns: [
-    //             //     {
-    //             //     checkbox: true
-    //             // },
-    //             {
-    //                 field: 'srcDatabase',
-    //                 title: '来源库'
-    //             },
-    //             {
-    //                 field: 'title',
-    //                 title: '题名2'
-    //             },
-    //             {
-    //                 field: 'author',
-    //                 title: '作者'
-    //             },
-    //             {
-    //                 field: 'organ',
-    //                 title: '单位'
-    //             },
-    //             {
-    //                 field: 'source',
-    //                 title: '文献来源'
-    //             },
-    //             {
-    //                 field: 'keyword',
-    //                 title: '关键词'
-    //             },
-    //             {
-    //                 field: 'summary',
-    //                 title: '摘要'
-    //             },
-    //             {
-    //                 field: 'articleText',
-    //                 title: '全文'
-    //             },
-    //             {
-    //                 field: 'pubTime',
-    //                 title: '发表时间'
-    //             }
-    //         ]
-    //     };
-    //     $.table.init(options);
-    // }
+        console.log("2222")
+        // 构建请求 URL
+        var prefix = ctx + "front/article";
+        var url = prefix + "/selectArticle?key=" + searchKey + "&searchTerms=" + encodeURIComponent(searchTerms);
 
+        var options = {
+            url: url,
+            columns: [
+                {
+                    field: 'srcDatabase',
+                    title: '来源库'
+                },
+                {
+                    field: 'title',
+                    title: '题名',
+                    formatter: function (value, row, index) {
+                        return '<a href="javascript:void(0);" onclick="goToArticleDetail(\'' + row.id + '\')">' + value + '</a>';
+                    }
+                },
+                {
+                    field: 'author',
+                    title: '作者'
+                },
+                {
+                    field: 'organ',
+                    title: '单位'
+                },
+                {
+                    field: 'source',
+                    title: '文献来源'
+                },
+                {
+                    field: 'keyword',
+                    title: '关键词'
+                },
+                {
+                    field: 'summary',
+                    title: '摘要'
+                },
+                {
+                    field: 'articleText',
+                    title: '链接',
+                    formatter: function(value, row, index) {
+                        // 如果 articleText 有值，则创建一个 a 标签链接
+                        if (value) {
+                            return '<a href="' + value + '" target="_blank">点击跳转...</a>';
+                        }
+                        return '';
+                    }
+                },
+                {
+                    field: 'pubTime',
+                    title: '发表时间'
+                }
+            ]
+        };
+        $.table.init(options);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        this.isShowTable = "true"
+    }
 
     new Vue({
         el: '#home',
@@ -315,11 +295,11 @@
         },
         methods: {
 
-            getoHome(){
+            getoHome() {
                 window.location.href = "/";
             },
 
-            goToFilmDate(){
+            goToFilmDate() {
                 window.location.href = "/front/goToFilmDate";
             },
 
@@ -345,6 +325,19 @@
 
 
 <style>
+    .selectButten {
+        width: 72px;
+        border: none;
+        height: 100%;
+        outline: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #c5464a;
+        border-radius: 0px 19px 19px 0px;
+        color: white
+    }
+
 
     .search input {
         width: 100%;
