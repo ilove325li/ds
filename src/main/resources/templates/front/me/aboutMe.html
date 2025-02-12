@@ -1,0 +1,109 @@
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <script th:src="@{/js/vue/vue.js}"></script>
+    <th:block th:include="include :: header('关于我们')"/>
+</head>
+<body>
+
+<div id="home" class="home" style="background-color: #e6a44c;height: 100vh;width: 100%;display: flex;align-items: center;justify-content: center">
+
+    <div class="menu" style="position: fixed;top: 0">
+        <div style="display: flex;
+            text-align: center;
+            justify-content: center;
+            align-items: center;">
+            <div class="goToMyPage" data-target="homepage" onclick="getoHome()"> 首页</div>
+            <div onclick="goToliterature()">文献数据库</div>
+            <div onclick="goToFilmDate()">影视信息库</div>
+            <div onclick="goToAboutMe()">关于我们</div>
+        </div>
+    </div>
+
+
+    <div style="background-color: white; width: 95%;height: 86%;margin-top: 4%">
+        <h1 style="text-align: center;font-weight: bold;margin-top: 3%">关于我们</h1>
+        <div style="background-color: white;width: 80%;;margin: auto;margin-top: 1%">
+
+            <p style="text-indent: 2em;font-size: 20px" th:text="${dsAboutMe.getText()}"></p>
+
+            <div style="font-size: 20px;display: flex">
+                <strong style="text-indent: 2em;">联系方式：</strong><p  th:text="${dsAboutMe.getPhone()}"></p>
+            </div>
+
+            <div style="font-size: 20px;display: flex">
+                <strong style="text-indent: 2em;">通信地址：</strong><p  th:text="${dsAboutMe.getAddress()}"></p>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+
+<style>
+    .menu {
+        color: white;
+        font-size: 30px;
+        background-color: rgba(0, 0, 0, 0.2);
+        position: fixed;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 7% /* 让 .menu 容器占满整个视口高度 */
+    }
+
+    .menu > div {
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .menu > div > div {
+        margin: 0 80px; /* 为子元素添加左右间距 */
+    }
+
+
+    .menu > div > div {
+        margin: 0 80px;
+        color: white;
+        cursor: pointer; /* 鼠标悬停时显示指针样式 */
+    }
+
+    .menu > div > div:hover {
+        font-weight: bold;
+        color: #734000;
+    }
+</style>
+
+</html>
+<script>
+   function goToFilmDate(){
+        window.location.href = "/front/goToFilmDate";
+    }
+
+   function  goToAboutMe(){
+        window.location.href = "/front/goToAboutMe";
+    }
+
+    //跳转影视详情
+   function  goToFilmDetail(id) {
+        window.location.href = "/front/goToFilmDetail?id=" + encodeURIComponent(id);
+    }
+
+    //调整文献数据库
+   function   goToliterature(searchTerms){
+        window.location.href = "/front/goToliterature?searchTerms=" + encodeURIComponent(searchTerms)+"&key=0";
+    }
+   function   getoHome(){
+       window.location.href = "/";
+   }
+
+</script>

@@ -241,7 +241,7 @@
             <div class="goToMyPage" data-target="homepage"> 首页</div>
             <div @click="goToliterature('')">文献数据库</div>
             <div @click="goToFilmDate()">影视信息库</div>
-            <div>关于我们</div>
+            <div @click="goToAboutMe()">关于我们</div>
         </div>
     </div>
 
@@ -380,7 +380,7 @@
                                  style="background-color: #e6a44c;border-top-left-radius: 15px;
                                   border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
                                 <!-- 这里假设 searchTermsOfBox 是 Vue 实例中的数据，实际使用时要确保有正确的上下文 -->
-                                <div style="width: 180px;display: flex; justify-content: center;  border-top-left-radius: 15px;
+                                <div style="min-width: 180px;display: flex; justify-content: center;  border-top-left-radius: 15px;
                                   border-bottom-left-radius: 15px;color: white; font-size: 25px;font-weight: bold; border-bottom-right-radius: 15px; align-items: center; height: 60px; padding: 5px;"
                                      class="hover-#efef8b" @click="goToliterature(item.searchTerms)">
                                     {{item.searchTerms}}
@@ -504,7 +504,7 @@
                 <div v-for="(item, index) in recommendFilmOfTwo"
                      style="color: black;box-shadow: 20px 20px 10px rgba(0, 0, 0, 0.3);margin-right: 40px">
                     <!-- 每一部影视 -->
-                    <div style="height: 100%;background-color: #87461a; width: 140px;" @click="goToFilmDetail(item.id)">
+                    <div style="height: 100%;background-color: #efef8b; width: 140px;" @click="goToFilmDetail(item.id)">
                         <div style="width: 100%; height: 170px;position: relative;">
                             <img :src="item.img" alt="影视海报" style="height: 100%; width: 100%; object-fit: cover;">
                             <span v-if="item.kind == 0"
@@ -622,7 +622,7 @@
                 <div v-for="(item, index) in recommendFilmOfFour"
                      style="color: black;box-shadow: 20px 20px 10px rgba(0, 0, 0, 0.3);margin-right: 40px">
                     <!-- 每一部影视 -->
-                    <div style="height: 100%;background-color: #ba8034; width: 140px;" @click="goToFilmDetail(item.id)">
+                    <div style="height: 100%;background-color: #efef8b; width: 140px;" @click="goToFilmDetail(item.id)">
                         <div style="width: 100%; height: 160px;position: relative;">
                             <img :src="item.img" alt="影视海报" style="height: 100%; width: 100%; object-fit: cover;">
                             <span v-if="item.kind == 0"
@@ -691,6 +691,10 @@
 
             goToFilmDate(){
                 window.location.href = "/front/goToFilmDate";
+            },
+
+            goToAboutMe(){
+                window.location.href = "/front/goToAboutMe";
             },
 
             //跳转影视详情

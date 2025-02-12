@@ -34,7 +34,7 @@ public class DsFilm extends BaseEntity
     private Date annual;
 
     /** 电视剧 */
-    @Excel(name = "电视剧")
+    @Excel(name = "影视名称")
     private String tvSeries;
 
     /** 海报图 */
@@ -42,7 +42,7 @@ public class DsFilm extends BaseEntity
     private String img;
 
     /** 主题内容以内容准确为目标 */
-    @Excel(name = "主题内容以内容准确为目标")
+    @Excel(name = "剧情简介")
     private String topicContent;
 
     /** 影视类型（0谍战、1悬疑、2刑侦、3历史、4古装、5武侠、6军旅、7战争、8喜剧、9青春、10言情、11偶像、12家庭、13年代、14革命、15农村、16都市、17其他、18传记、19剧情） */
@@ -84,6 +84,18 @@ public class DsFilm extends BaseEntity
     /** 是否推荐（0否，1是） */
     @Excel(name = "是否推荐", readConverterExp = "0=否,1=是")
     private Long recommend;
+
+    public String getAwardInformation() {
+        return awardInformation;
+    }
+
+    public void setAwardInformation(String awardInformation) {
+        this.awardInformation = awardInformation;
+    }
+
+    /** 获奖信息 */
+    @Excel(name = "获奖信息")
+    private String awardInformation;
 
     public void setId(Long id)
     {

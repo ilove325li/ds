@@ -350,10 +350,6 @@ public class DsSearchArticleTermsController extends BaseController
 
         List<DsSearchArticleTerms> list = dsSearchArticleTermsService.selectDsSearchArticleTermsByTitleId(id);
 
-        list.addAll(list);
-        list.addAll(list);
-        list.addAll(list);
-
         return list;
     }
 

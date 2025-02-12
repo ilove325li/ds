@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ds.project.front.film.mapper.DsFilmMapper">
-    
+
     <resultMap type="DsFilm" id="DsFilmResult">
         <result property="id"    column="id"    />
         <result property="annual"    column="annual"    />
@@ -20,10 +20,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="url"    column="url"    />
         <result property="kind"    column="kind"    />
         <result property="recommend"    column="recommend"    />
+        <result property="awardInformation"    column="award_information"    />
     </resultMap>
 
     <sql id="selectDsFilmVo">
-        select id, annual, tv_series, img, topic_content, type, director, screenwriter, actor, episode_num, reasons, chronological_division, url, kind, recommend from ds_film
+        select id, annual, tv_series, img, topic_content, type, director, screenwriter, actor, episode_num, reasons, chronological_division, url, kind, recommend, award_information from ds_film
     </sql>
 
     <select id="selectDsFilmList" parameterType="DsFilm" resultMap="DsFilmResult">
@@ -68,6 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="url != null">url,</if>
             <if test="kind != null and kind != ''">kind,</if>
             <if test="recommend != null">recommend,</if>
+            <if test="awardInformation != null">award_information,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="annual != null">#{annual},</if>
@@ -84,6 +86,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="url != null">#{url},</if>
             <if test="kind != null and kind != ''">#{kind},</if>
             <if test="recommend != null">#{recommend},</if>
+            <if test="awardInformation != null">#{awardInformation},</if>
          </trim>
     </insert>
 
@@ -104,6 +107,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="url != null">url = #{url},</if>
             <if test="kind != null and kind != ''">kind = #{kind},</if>
             <if test="recommend != null">recommend = #{recommend},</if>
+            <if test="awardInformation != null">award_information = #{awardInformation},</if>
         </trim>
         where id = #{id}
     </update>

@@ -113,11 +113,12 @@ public class DsFilmServiceImpl implements IDsFilmService
         }
 
 
-int rowNum = 1;
+int rowNum = 0;
         for (DsFilm dsFilm : userList){
 
             if(!org.springframework.util.StringUtils.hasText(dsFilm.getChronologicalDivision())){
-                throw new RuntimeException(rowNum+",年代划分是必填的");
+                System.out.println(dsFilm.getTvSeries());
+                throw new RuntimeException(rowNum+",年代划分是必填的，剧名《"+dsFilm.getTvSeries()+"》");
             }
 
             dsFilm.setImg(null);

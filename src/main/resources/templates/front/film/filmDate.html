@@ -9,27 +9,30 @@
     <style></style>
 </head>
 <body>
-<div id="home" class="home" style="background-color: red;height: 99vh">
+
+<div id="home" class="home"
+     style="background-color: #e6a44c;height: 100vh;width: 100%;margin: 0;padding: 0;position: absolute;top: 0;right: 0;left: 0;bottom: 0">
 
 
     <!-- 菜单 -->
     <div class="menu">
         <div style="display: flex;
+        top: 0;
             text-align: center;
             justify-content: center;
             align-items: center;">
             <div class="goToMyPage" data-target="homepage" @click="getoHome()"> 首页</div>
             <div @click="goToliterature('')">文献数据库</div>
             <div @click="goToFilmDate()">影视信息库</div>
-            <div>关于我们</div>
+            <div @click="goToAboutMe()">关于我们</div>
         </div>
     </div>
 
     <div style="padding-left:10%;padding-right: 10%;background-color: #e6a44c;height: 100% ">
         <!--标题 -->
         <div style="padding-top:5%;margin-bottom:10px;display: flex;align-items: center;justify-content: center;flex-direction: column;background-color: #e6a44c">
-<!--            <div style="color: red;font-size: 30px;font-weight: bold">中国共产党人精神谱系</div>-->
-<!--            <div style="color: red;font-size: 30px;font-weight: bold">影视信息库</div>-->
+            <!--            <div style="color: red;font-size: 30px;font-weight: bold">中国共产党人精神谱系</div>-->
+            <!--            <div style="color: red;font-size: 30px;font-weight: bold">影视信息库</div>-->
 
             <!-- 首页 -->
             <div class="homepage" id="homepage">
@@ -42,7 +45,8 @@
 
         </div>
         <div>
-            <form style="background-color: #ffffff;padding-top: 20px;padding-bottom: 20px;" @submit.prevent="selectFilm">
+            <form style="background-color: #ffffff;padding-top: 20px;padding-bottom: 20px;"
+                  @submit.prevent="selectFilm">
                 <div style="margin-bottom: 10px">
                     <div class="search">
                         <div class="myForm">
@@ -52,19 +56,33 @@
                         </div>
                     </div>
                 </div>
-                <div style="display: flex;justify-content: center">
+                <div style="display: flex;justify-content: center;font-size: 21px;font-weight: bold">
                     <div>
                         <!-- 使用 v-model 绑定单选框的值 -->
-                        <input type="checkbox" value="电影" name="filmType" v-model="selectedFilmType">电影
-                        <input type="checkbox" value="电视剧" name="filmType" v-model="selectedFilmType">电视剧
+                        <label>
+                            <input type="checkbox" value="电影" name="filmType" v-model="selectedFilmType"> 电影
+                        </label>
+                        <label>
+                            <input type="checkbox" value="电视剧" name="filmType" v-model="selectedFilmType">电视剧
+                        </label>
                     </div>
                     <div style="margin-left: 40px;border-left: 2px solid #0b0b0b;padding-left: 50px">
                         <!-- 使用 v-model 绑定复选框的值 -->
-                        <input style="margin-left: 0px" type="checkbox" value="4" v-model="selectedPeriods">伟大建党精神
-                        <input style="margin-left: 20px" type="checkbox" value="0" v-model="selectedPeriods">新民主主义革命时期
-                        <input style="margin-left: 20px" type="checkbox" value="1" v-model="selectedPeriods">社会主义革命和建设时期
-                        <input style="margin-left: 20px" type="checkbox" value="2" v-model="selectedPeriods">改革开放和社会主义现代化建设新时期
-                        <input style="margin-left: 20px" type="checkbox" value="3" v-model="selectedPeriods">中国特色社会主义新时代
+                        <label>
+                            <input style="margin-left: 0px" type="checkbox" value="4" v-model="selectedPeriods">伟大建党精神
+                        </label>
+                        <label>
+                            <input style="margin-left: 20px" type="checkbox" value="0" v-model="selectedPeriods">新民主主义革命时期
+                        </label>
+                        <label>
+                            <input style="margin-left: 20px" type="checkbox" value="1" v-model="selectedPeriods">社会主义革命和建设时期
+                        </label>
+                        <label>
+                            <input style="margin-left: 20px" type="checkbox" value="2" v-model="selectedPeriods">改革开放和社会主义现代化建设新时期
+                        </label>
+                        <label>
+                            <input style="margin-left: 20px" type="checkbox" value="3" v-model="selectedPeriods">中国特色社会主义新时代
+                        </label>
                     </div>
                 </div>
             </form>
@@ -72,10 +90,10 @@
 
 
         <!-- 影视列表 -->
-        <div style="padding-right: 10%;padding-left: 10%;background-color: #ffffff ;height: 60%;overflow-y: scroll">
+        <div style="padding-right: 0%;padding-left: 8%;background-color: #ffffff ;height: 60%;overflow-y: scroll">
             <div style=" display: flex;     flex-wrap: wrap;gap: 20px; ">
                 <div v-for="(item, index) in selectFilmDate"
-                     style="color: black;box-shadow: 20px 20px 10px rgba(0, 0, 0, 0.3);margin-right: 40px">
+                     style="color: black;box-shadow: 20px 20px 10px rgba(0, 0, 0, 0.3);margin-right: 20px">
                     <!-- 每一部影视 -->
                     <div style="height: 100%;background-color: #ccccc7; width: 140px;" @click="goToFilmDetail(item.id)">
                         <div style="width: 100%; height: 170px;position: relative;">
@@ -106,7 +124,7 @@
             keyword: '', // 输入框的值
             selectedFilmType: [], // 单选框选中的值
             selectedPeriods: [], // 复选框选中的值
-            selectFilmDate:[]
+            selectFilmDate: []
         },
         methods: {
             selectFilm() {
@@ -126,7 +144,7 @@
                     type: "post",
                     data: formData,
                     success: function (result) {
-                            vm.selectFilmDate = result;
+                        vm.selectFilmDate = result;
                     }
                 })
 
@@ -137,16 +155,22 @@
                 window.location.href = "/front/goToFilmDetail?id=" + encodeURIComponent(id);
             },
             //调整文献数据库
-            goToliterature(searchTerms){
-                window.location.href = "/front/goToliterature?searchTerms=" + encodeURIComponent(searchTerms)+"&key=0";
+            goToliterature(searchTerms) {
+                window.location.href = "/front/goToliterature?searchTerms=" + encodeURIComponent(searchTerms) + "&key=0";
             },
-            getoHome(){
+            getoHome() {
                 window.location.href = "/";
-            }
+            },
+            goToAboutMe() {
+                window.location.href = "/front/goToAboutMe";
+            },
 
         },
-        mounted() {},
-        created() {}
+        mounted() {
+            this.selectFilm()
+        },
+        created() {
+        }
     });
 </script>
 <style>
@@ -168,6 +192,22 @@
         9px 6px #990000, 9px 8px #660000, 11px 7px #990000;
     }
 
+    /* 增大输入框大小 */
+    input[type="checkbox"] {
+        transform: scale(1.5); /* 可以根据需要调整缩放比例 */
+        accent-color: #c5464a; /* 设置选中颜色 */
+        margin-right: 5px; /* 增加输入框和文字之间的间距 */
+    }
+
+    /* 去除输入框默认的外边距 */
+    input[type="checkbox"]:first-of-type {
+        margin-left: 0;
+    }
+
+    /* 为 label 添加一些样式，使其更具交互性 */
+    label {
+        cursor: pointer;
+    }
 
     .myForm {
         /* 放大 1.5 倍，可按需调整 */
@@ -175,21 +215,26 @@
         /* 设定缩放的起始点 */
         transform-origin: top left;
     }
+
     * {
         box-sizing: border-box; /*宽度和高度会包括内边距和边框*/
     }
+
     div.search {
         padding: 10px 0;
     }
+
     .myForm {
         position: relative;
         width: 900px;
         margin: 0 auto; /*设置宽度后，居中*/
     }
+
     input, button {
         border: none; /*无边框样式；元素的总宽度和高度包括边框的宽度 */
         outline: none; /*无轮廓样式；轮廓是在元素周围绘制的一条线，在边框之外并且可能与其他内容重叠，以凸显元素，元素的总宽度和高度不受轮廓线宽度的影响。*/
     }
+
     .search input {
         width: 100%;
         height: 42px;
@@ -198,6 +243,7 @@
         border-radius: 19px; /*border-radius 属性用于向元素添加圆角边框：*/
         background: transparent; /*背景透明*/
     }
+
     .search button {
         height: 42px;
         width: 42px;
@@ -208,9 +254,11 @@
         width: 60px;
         right: 0;
     }
+
     .search button:hover {
         background-color: #c7585c; /*点击搜索按钮时的背景颜色*/
     }
+
     /* 在<button>元素后面插入内容，并设置所插入内容的样式： */
     .search button:before {
         content: "搜索"; /*插入的内容*/
@@ -232,7 +280,8 @@
         font-size: 30px;
         background-color: rgba(0, 0, 0, 0.2);
         position: fixed;
-        width: 99%;
+        top: 0;
+        width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;

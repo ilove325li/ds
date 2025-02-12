@@ -213,8 +213,19 @@ public class DsArticleController extends BaseController
     @ResponseBody
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
     {
+
+        // 获取上传文件的原始文件名
+        String fileName = file.getOriginalFilename();
+        String[] split = fileName.split(".xlsx");
+        System.out.println("上传的文件名是: " + split[0]);
+
         ExcelUtil<DsArticle> util = new ExcelUtil<DsArticle>(DsArticle.class);
         List<DsArticle> userList = util.importExcel(file.getInputStream());
+
+        for (DsArticle dsArticle : userList){
+            dsArticle.setKeyword(split[0]);
+        }
+
         String message = dsArticleService.importUser(userList, updateSupport);
         return AjaxResult.success(message);
     }

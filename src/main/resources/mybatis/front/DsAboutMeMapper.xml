@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ds.project.front.me.mapper.DsAboutMeMapper">
+    
+    <resultMap type="DsAboutMe" id="DsAboutMeResult">
+        <result property="id"    column="id"    />
+        <result property="text"    column="text"    />
+        <result property="phone"    column="phone"    />
+        <result property="address"    column="address"    />
+    </resultMap>
+
+    <sql id="selectDsAboutMeVo">
+        select id, text, phone, address from ds_about_me
+    </sql>
+
+    <select id="selectDsAboutMeList" parameterType="DsAboutMe" resultMap="DsAboutMeResult">
+        <include refid="selectDsAboutMeVo"/>
+        <where>  
+            <if test="text != null  and text != ''"> and text like concat('%', #{text}, '%')</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+        </where>
+    </select>
+    
+    <select id="selectDsAboutMeById" parameterType="Long" resultMap="DsAboutMeResult">
+        <include refid="selectDsAboutMeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertDsAboutMe" parameterType="DsAboutMe">
+        insert into ds_about_me
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="text != null">text,</if>
+            <if test="phone != null">phone,</if>
+            <if test="address != null">address,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="text != null">#{text},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="address != null">#{address},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDsAboutMe" parameterType="DsAboutMe">
+        update ds_about_me
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="text != null">text = #{text},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="address != null">address = #{address},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDsAboutMeById" parameterType="Long">
+        delete from ds_about_me where id = #{id}
+    </delete>
+
+    <delete id="deleteDsAboutMeByIds" parameterType="String">
+        delete from ds_about_me where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

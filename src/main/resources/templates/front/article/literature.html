@@ -19,7 +19,7 @@
             <div class="goToMyPage" data-target="homepage" @click="getoHome()"> 首页</div>
             <div>文献数据库</div>
             <div @click="goToFilmDate()">影视信息库</div>
-            <div>关于我们</div>
+            <div onclick="goToAboutMe()">关于我们</div>
         </div>
     </div>
 
@@ -27,11 +27,14 @@
     <div style="padding-top: 15%;" id="targetDiv">
 
         <!-- 标题-->
-        <div style="text-align: center;font-size: 37px;font-weight: bold;color: white">
-            <div>中国共产党人精神谱系</div>
-            <div>文献数据库</div>
+<!--        <div style="text-align: center;font-size: 37px;font-weight: bold;color: white">-->
+<!--            <div>中国共产党人精神谱系</div>-->
+<!--            <div>文献数据库</div>-->
+<!--        </div>-->
+        <div class="homeTitle">
+            <div style="font-size: 30px;letter-spacing: 10px;margin-bottom: 0%">中国共产党人精神谱系</div>
+            <div style="font-size: 40px;letter-spacing: 10px;margin-bottom: 0%">影视信息库</div>
         </div>
-
 
         <form id="formId">
 
@@ -127,7 +130,9 @@
         window.location.href = "/front/goToArticleDetail?id=" + encodeURIComponent(id);
     }
 
-
+    function goToAboutMe(){
+        window.location.href = "/front/goToAboutMe";
+    }
     $(function () {
 
 
@@ -152,13 +157,24 @@
             showRefresh: false, // 隐藏刷新按钮
             showToggle: false, // 隐藏视图切换按钮
             showColumns: false, // 隐藏列选择按钮
+            pagination: true, // 开启分页
+            pageList: [], // 不显示每页记录数选择框
+            showPaginationSwitch: false, // 隐藏切换分页显示的按钮
+            pageSize: 11,
             columns: [
                 //     {
                 //     checkbox: true
                 // },
                 {
                     field: 'srcDatabase',
-                    title: '来源库'
+                    title: '来源库',
+                    cellStyle: function (value, row, index) {
+                        return {
+                            css: {
+                                'white-space': 'nowrap'
+                            }
+                        };
+                    }
                 },
                 {
                     field: 'title',
@@ -188,7 +204,14 @@
                 },
                 {
                     field: 'organ',
-                    title: '单位'
+                    title: '单位',
+                    cellStyle: function (value, row, index) {
+                        return {
+                            css: {
+                                'white-space': 'nowrap'
+                            }
+                        };
+                    }
                 },
                 {
                     field: 'source',
@@ -203,12 +226,19 @@
                 },
                 {
                     field: 'keyword',
-                    title: '关键词'
+                    title: '关键词',
+                    cellStyle: function (value, row, index) {
+                        return {
+                            css: {
+                                'white-space': 'nowrap'
+                            }
+                        };
+                    }
                 },
-                {
-                    field: 'summary',
-                    title: '摘要'
-                },
+                // {
+                //     field: 'summary',
+                //     title: '摘要'
+                // },
                 {
                     field: 'articleText',
                     title: '链接',
@@ -229,7 +259,14 @@
                 },
                 {
                     field: 'pubTime',
-                    title: '发表时间'
+                    title: '发表时间',
+                    cellStyle: function (value, row, index) {
+                        return {
+                            css: {
+                                'white-space': 'nowrap'
+                            }
+                        };
+                    }
                 }
             ]
         };
@@ -353,7 +390,10 @@
 
 
 <style>
-
+    /* 设置表格整体字体大小 */
+    .table {
+        font-size: 20px; /* 可以根据需要调整字体大小 */
+    }
     .homeTitle {
         /*padding-top: 17%;*/
         display: flex;
