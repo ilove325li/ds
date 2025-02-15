@@ -356,7 +356,7 @@
 
 
     <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg" style="width: 80%;">
+        <div class="modal-dialog modal-lg" style="width: 83%;">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span
@@ -365,11 +365,11 @@
                     <h4 class="modal-title">{{titleOfBox}}</h4>
                 </div>
 
-                <div class="modal-body" style="height: 600px ;background-color: rgba(255,255,255,0);overflow-y: scroll">
+                <div class="modal-body" style="height: 800px ;background-color: rgba(255,255,255,0);overflow-y: scroll">
 
                     <!--简介-->
-                    <div style="overflow-y: scroll;height: 100px;background-color: rgba(255,255,255,0)">
-                        <p style="text-indent: 2em;font-size: 17px">{{briefIntroductionOfBox}}</p>
+                    <div style="overflow-y: scroll;max-height: 200px;background-color: rgba(255,255,255,0)">
+                        <p style="text-indent: 2em;font-size: 26px">{{briefIntroductionOfBox}}</p>
                     </div>
 
 
@@ -429,7 +429,7 @@
             </div>
 
             <!-- 小标题 -->
-            <div style="background-color: rgba(239,90,9,0);width: 83.5%;height: 77%; overflow-y: scroll;margin-top:11px">
+            <div style="background-color: rgba(239,90,9,0);width: 90.5%;height: 77%; overflow-y: scroll;margin-top:11px">
                 <div v-for="(item, index) in subheadingsOfonePeriods" style="display: inline-block;">
                     <div class="textOfsamllTile" data-toggle="modal" data-target="#myModal5"
                          @click="updateTitleOfBox(item.title,item.briefIntroduction,item.id)">
@@ -489,7 +489,7 @@
             </div>
 
             <!-- 小标题 -->
-            <div style="background-color: rgba(239,90,9,0);width: 83.5%;height: 77%; overflow-y: scroll;margin-top:11px">
+            <div style="background-color: rgba(239,90,9,0);width: 90.5%;height: 77%; overflow-y: scroll;margin-top:11px">
                 <div v-for="(item, index) in subheadingsOfTwoPeriods" style="display: inline-block;">
                     <div class="textOfsamllTile" data-toggle="modal" data-target="#myModal5"
                          @click="updateTitleOfBox(item.title,item.briefIntroduction,item.id)">
@@ -548,7 +548,7 @@
             </div>
 
             <!-- 小标题 -->
-            <div style="background-color: rgba(239,90,9,0);width: 83.5%;height: 77%; overflow-y: scroll;margin-top:11px">
+            <div style="background-color: rgba(239,90,9,0);width: 90.5%;height: 77%; overflow-y: scroll;margin-top:11px">
                 <div v-for="(item, index) in subheadingsOfThreePeriods" style="display: inline-block;">
                     <div class="textOfsamllTile" data-toggle="modal" data-target="#myModal5"
                          @click="updateTitleOfBox(item.title,item.briefIntroduction,item.id)">
@@ -607,7 +607,7 @@
             </div>
 
             <!-- 小标题 -->
-            <div style="background-color: rgba(239,90,9,0);width: 83.5%;height: 77%; overflow-y: scroll;margin-top:11px">
+            <div style="background-color: rgba(239,90,9,0);width: 90.5%;height: 77%; overflow-y: scroll;margin-top:11px">
                 <div v-for="(item, index) in subheadingsOfFourPeriods" style="display: inline-block;">
                     <div class="textOfsamllTile" data-toggle="modal" data-target="#myModal5"
                          @click="updateTitleOfBox(item.title,item.briefIntroduction,item.id)">

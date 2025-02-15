@@ -24,7 +24,7 @@
         <h1 style="text-align: center;font-weight: bold;margin-top: 3%">关于我们</h1>
         <div style="background-color: white;width: 80%;;margin: auto;margin-top: 1%">
 
-            <p style="text-indent: 2em;font-size: 20px" th:text="${dsAboutMe.getText()}"></p>
+            <p style="text-indent: 2em;font-size: 20px"  id="content"></p>
 
             <div style="font-size: 20px;display: flex">
                 <strong style="text-indent: 2em;">联系方式：</strong><p  th:text="${dsAboutMe.getPhone()}"></p>
@@ -84,7 +84,16 @@
 </style>
 
 </html>
-<script>
+<script th:inline="javascript">
+
+    var getText = [[${dsAboutMe.getText()}]];
+
+    var htmlString = getText;
+
+    console.log(getText)
+
+    document.getElementById("content").innerHTML = htmlString;
+
    function goToFilmDate(){
         window.location.href = "/front/goToFilmDate";
     }

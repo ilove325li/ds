@@ -223,7 +223,7 @@ public class DsArticleController extends BaseController
         List<DsArticle> userList = util.importExcel(file.getInputStream());
 
         for (DsArticle dsArticle : userList){
-            dsArticle.setKeyword(split[0]);
+            dsArticle.setFullTextWords (split[0]);
         }
 
         String message = dsArticleService.importUser(userList, updateSupport);

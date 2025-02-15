@@ -73,6 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="summary != null">summary,</if>
             <if test="pubTime != null">pubTime,</if>
             <if test="articleText != null">articleText,</if>
+            <if test="fullTextWords != null">fullTextWords,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="srcDatabase != null">#{srcDatabase},</if>
@@ -84,6 +85,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="summary != null">#{summary},</if>
             <if test="pubTime != null">#{pubTime},</if>
             <if test="articleText != null">#{articleText},</if>
+            <if test="fullTextWords != null">#{fullTextWords},</if>
          </trim>
     </insert>
 

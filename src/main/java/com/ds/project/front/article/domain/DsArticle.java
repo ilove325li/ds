@@ -21,40 +21,40 @@ public class DsArticle extends BaseEntity
     private Long id;
 
     /** 来源库 */
-    @Excel(name = "来源库")
+    @Excel(name = "SrcDatabase-来源库")
     private String srcDatabase;
 
     /** 题名 */
-    @Excel(name = "题名")
+    @Excel(name = "Title-题名")
     private String title;
 
     /** 作者 */
-    @Excel(name = "作者")
+    @Excel(name = "Author-作者")
     private String author;
 
     /** 单位 */
-    @Excel(name = "单位")
+    @Excel(name = "Organ-单位")
     private String organ;
 
     /** 文献来源 */
-    @Excel(name = "文献来源")
+    @Excel(name = "Source-文献来源")
     private String source;
 
     /** 关键词 */
-    @Excel(name = "关键词")
+    @Excel(name = "Keyword-关键词")
     private String keyword;
 
     /** 摘要 */
-    @Excel(name = "摘要")
+    @Excel(name = "Summary-摘要")
     private String summary;
 
     /** 发表时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "发表时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "PubTime-发表时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date pubTime;
 
     /** 全文 */
-    @Excel(name = "url")
+    @Excel(name = "URL-网址")
     private String articleText;
 
     public String getFullTextWords() {

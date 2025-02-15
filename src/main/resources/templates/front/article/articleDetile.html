@@ -47,7 +47,7 @@
 
                 <div style="margin-top: 10px;font-size: 20px;">
                     <span style="font-size: 20px;font-weight: bold">链接：</span> <a th:href="${dsArticle.articleText}"
-                                                                                    target="_blank">链接跳转</a>
+                                                                                    target="_blank" th:text="${dsArticle.articleText}"></a>
                 </div>
             </div>
         </div>
