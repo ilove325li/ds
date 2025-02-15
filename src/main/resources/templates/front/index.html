@@ -192,7 +192,7 @@
         }
 
 
-        .textOfsamllTile:hover {
+        .containTextOfsamllTile:hover {
             /* 鼠标悬停时，宽度和高度增加 10px */
             width: 190.5px;
             height: 75px;
@@ -203,26 +203,57 @@
 
         /* 移除了.textOfsamllTile:hover 规则 */
         .textOfsamllTile {
+            white-space: nowrap; /* 禁止文本换行 */
+            overflow: hidden; /* 隐藏超出部分 */
+            text-overflow: ellipsis; /* 超出部分显示为省略号 */
+            /*width: 180.5px;*/
+            /*height: 65px;*/
+            /*background-color: #ba8034;*/
+            /*margin-right: 20px;*/
+            /*margin-bottom: 10px;*/
+            /*margin-top: 10px;*/
+            text-align: center;
+            /*display: flex;*/
+            /*justify-content: center;*/
+            /*align-items: center;*/
+            font-size: 20px;
+            font-weight: bold;
+            /*border-top-left-radius: 15px;*/
+            /*border-bottom-left-radius: 15px;*/
+            /*border-bottom-right-radius: 15px;*/
+            color: white;
+            /*transition: all 0.3s ease;*/
+        }
+
+
+        .containTextOfsamllTile {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 180.5px;
             height: 65px;
             background-color: #ba8034;
             margin-right: 20px;
             margin-bottom: 10px;
             margin-top: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 20px;
-            font-weight: bold;
             border-top-left-radius: 15px;
             border-bottom-left-radius: 15px;
             border-bottom-right-radius: 15px;
-            color: white;
             transition: all 0.3s ease;
         }
+
+
         /* 定义鼠标悬停时的样式 */
         .hover-#efef8b:hover {
             background-color: #ba8034;
+        }
+
+        .single-line {
+            width: 200px; /* 设置固定宽度 */
+            white-space: nowrap; /* 禁止文本换行 */
+            overflow: hidden; /* 隐藏超出部分 */
+            text-overflow: ellipsis; /* 超出部分显示为省略号 */
+
         }
     </style>
     <th:block th:include="include :: header('模态窗口')"/>
@@ -258,9 +289,9 @@
     <!-- 大标题 -->
     <div class="bigHeadline" id="bigHeadline" style="display: flex; justify-content: center;
             align-items: center; flex-direction: column;">
-<div style="position: absolute;margin-left: -1500px;margin-top: -750px;font-weight: bold;font-size: 26px;color: #f8dccc">
-    
-</div>
+        <div style="position: absolute;margin-left: -1500px;margin-top: -750px;font-weight: bold;font-size: 26px;color: #f8dccc">
+
+        </div>
 
         <!-- 简介 -->
         <div class="shadowed-title" style="overflow-y: scroll;">
@@ -327,7 +358,7 @@
             align-items: center;">
 
         <div style="position: absolute;margin-left: -1500px;margin-top: -750px;font-weight: bold;font-size: 26px;color: #f8dccc">
-            
+
         </div>
 
         <div style="background-color: #e6a44c;width: 35%;height: 48%;display: flex;
@@ -393,7 +424,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-<!--                    <button type="button" class="btn btn-primary">保存</button>-->
+                    <!--                    <button type="button" class="btn btn-primary">保存</button>-->
                 </div>
             </div>
         </div>
@@ -409,11 +440,11 @@
              flex-direction: column;">
         <!-- 第一个时期 -->
         <div style="position: absolute;margin-left: -1500px;margin-top: -750px;font-weight: bold;font-size: 26px;color: #f8dccc">
-            
+
         </div>
         <div style="display: flex; justify-content: center;
             align-items: center; flex-direction: column;
-            background-color: #ffffff;width: 65%;height: 49% ;box-shadow: 30px 30px 20px rgba(0, 0, 0, 0.3);">
+            background-color: #ffffff;width: 61%;height: 49% ;box-shadow: 30px 30px 20px rgba(0, 0, 0, 0.3);">
             <!-- 标题 -->
             <div style="
             height: 9%;
@@ -431,9 +462,11 @@
             <!-- 小标题 -->
             <div style="background-color: rgba(239,90,9,0);width: 90.5%;height: 77%; overflow-y: scroll;margin-top:11px">
                 <div v-for="(item, index) in subheadingsOfonePeriods" style="display: inline-block;">
-                    <div class="textOfsamllTile" data-toggle="modal" data-target="#myModal5"
-                         @click="updateTitleOfBox(item.title,item.briefIntroduction,item.id)">
-                        {{item.title}}
+                    <div class="containTextOfsamllTile">
+                        <div class="textOfsamllTile" data-toggle="modal" data-target="#myModal5"
+                             @click="updateTitleOfBox(item.title,item.briefIntroduction,item.id)">
+                            {{item.title}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -469,11 +502,11 @@
              flex-direction: column;">
         <!-- 第2个时期 -->
         <div style="position: absolute;margin-left: -1500px;margin-top: -750px;font-weight: bold;font-size: 26px;color: #f8dccc">
-            
+
         </div>
         <div style="display: flex; justify-content: center;
             align-items: center; flex-direction: column;
-            background-color: #ffffff;width: 65%;height: 49% ;box-shadow: 30px 30px 20px rgba(0, 0, 0, 0.3);">
+            background-color: #ffffff;width: 61%;height: 49% ;box-shadow: 30px 30px 20px rgba(0, 0, 0, 0.3);">
             <!-- 标题 -->
             <div style="
             height: 9%;
@@ -491,9 +524,11 @@
             <!-- 小标题 -->
             <div style="background-color: rgba(239,90,9,0);width: 90.5%;height: 77%; overflow-y: scroll;margin-top:11px">
                 <div v-for="(item, index) in subheadingsOfTwoPeriods" style="display: inline-block;">
-                    <div class="textOfsamllTile" data-toggle="modal" data-target="#myModal5"
-                         @click="updateTitleOfBox(item.title,item.briefIntroduction,item.id)">
-                        {{item.title}}
+                    <div class="containTextOfsamllTile">
+                        <div class="textOfsamllTile" data-toggle="modal" data-target="#myModal5"
+                             @click="updateTitleOfBox(item.title,item.briefIntroduction,item.id)">
+                            {{item.title}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -528,11 +563,11 @@
              flex-direction: column;">
         <!-- 第3个时期 -->
         <div style="position: absolute;margin-left: -1500px;margin-top: -750px;font-weight: bold;font-size: 26px;color: #f8dccc">
-            
+
         </div>
         <div style="display: flex; justify-content: center;
             align-items: center; flex-direction: column;
-            background-color: #ffffff;width: 65%;height: 49% ;box-shadow: 30px 30px 20px rgba(0, 0, 0, 0.3);">
+            background-color: #ffffff;width: 61%;height: 49% ;box-shadow: 30px 30px 20px rgba(0, 0, 0, 0.3);">
             <!-- 标题 -->
             <div style="
             height: 9%;
@@ -550,9 +585,11 @@
             <!-- 小标题 -->
             <div style="background-color: rgba(239,90,9,0);width: 90.5%;height: 77%; overflow-y: scroll;margin-top:11px">
                 <div v-for="(item, index) in subheadingsOfThreePeriods" style="display: inline-block;">
-                    <div class="textOfsamllTile" data-toggle="modal" data-target="#myModal5"
-                         @click="updateTitleOfBox(item.title,item.briefIntroduction,item.id)">
-                        {{item.title}}
+                    <div class="containTextOfsamllTile">
+                        <div class="textOfsamllTile" data-toggle="modal" data-target="#myModal5"
+                             @click="updateTitleOfBox(item.title,item.briefIntroduction,item.id)">
+                            {{item.title}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -587,11 +624,11 @@
              flex-direction: column;">
         <!-- 第4个时期 -->
         <div style="position: absolute;margin-left: -1500px;margin-top: -750px;font-weight: bold;font-size: 26px;color: #f8dccc">
-            
+
         </div>
         <div style="display: flex; justify-content: center;
             align-items: center; flex-direction: column;
-            background-color: #ffffff;width: 65%;height: 49% ;box-shadow: 30px 30px 20px rgba(0, 0, 0, 0.3);">
+            background-color: #ffffff;width: 61%;height: 49% ;box-shadow: 30px 30px 20px rgba(0, 0, 0, 0.3);">
             <!-- 标题 -->
             <div style="
             height: 9%;
@@ -609,9 +646,11 @@
             <!-- 小标题 -->
             <div style="background-color: rgba(239,90,9,0);width: 90.5%;height: 77%; overflow-y: scroll;margin-top:11px">
                 <div v-for="(item, index) in subheadingsOfFourPeriods" style="display: inline-block;">
-                    <div class="textOfsamllTile" data-toggle="modal" data-target="#myModal5"
-                         @click="updateTitleOfBox(item.title,item.briefIntroduction,item.id)">
-                        {{item.title}}
+                    <div class="containTextOfsamllTile">
+                        <div class="textOfsamllTile" data-toggle="modal" data-target="#myModal5"
+                             @click="updateTitleOfBox(item.title,item.briefIntroduction,item.id)">
+                            {{item.title}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -689,11 +728,11 @@
             },
 
 
-            goToFilmDate(){
+            goToFilmDate() {
                 window.location.href = "/front/goToFilmDate";
             },
 
-            goToAboutMe(){
+            goToAboutMe() {
                 window.location.href = "/front/goToAboutMe";
             },
 
@@ -703,8 +742,8 @@
             },
 
             //调整文献数据库
-            goToliterature(searchTerms){
-                window.location.href = "/front/goToliterature?searchTerms=" + encodeURIComponent(searchTerms)+"&key=0";
+            goToliterature(searchTerms) {
+                window.location.href = "/front/goToliterature?searchTerms=" + encodeURIComponent(searchTerms) + "&key=0";
             },
 
             // 获取小标题
@@ -747,10 +786,6 @@
 
 
             }
-
-
-
-
 
 
         },

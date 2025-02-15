@@ -168,12 +168,12 @@ public class DsArticleController extends BaseController
                 dsArticle.setSummary(text);
                 dsArticle.setFullTextWords(text);
             }
-        } else if ("1,1".equals(key)){
+        } else if ("1,1".equals(key)||"0,1".equals(key)){
             // 标题
             if(StringUtils.hasText(text)){
                 dsArticle.setTitle(text);
             }
-        } else if ("2,2".equals(key)){
+        } else if ("2,2".equals(key)||"0,2".equals(key)){
             // 关键字
             if(StringUtils.hasText(text)){
                 dsArticle.setKeyword(text);
