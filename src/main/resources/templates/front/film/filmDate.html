@@ -1,14 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <script th:src="@{/js/vue/vue.js}"></script>
-    <th:block th:include="include :: footer"/>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>党史</title>
-    <style></style>
+    <th:block th:include="include :: header('影视列表')"/>
 </head>
-<body>
+<body class="gray-bg">
 
 <div id="home" class="home"
      style="background-color: #e6a44c;height: 100vh;width: 100%;margin: 0;padding: 0;position: absolute;top: 0;right: 0;left: 0;bottom: 0">
@@ -17,7 +13,7 @@
     <!-- 菜单 -->
     <div class="menu">
         <div style="display: flex;
-        top: 0;
+        top: -1%;
             text-align: center;
             justify-content: center;
             align-items: center;">
@@ -28,59 +24,62 @@
         </div>
     </div>
 
-    <div style="padding-left:7%;padding-right: 7%;background-color: #e6a44c;height: 100% ">
+    <div style="padding-left:7%;padding-right: 7%;background-color: #e6a44c;height: 100% ;overflow: hidden">
         <!--标题 -->
-        <div style="padding-top:5%;margin-bottom:10px;display: flex;align-items: center;justify-content: center;flex-direction: column;background-color: #e6a44c">
+        <div id="targetDiv" style="padding-top:5%;margin-bottom:10px;display: flex;align-items: center;justify-content: center;flex-direction: column;background-color: #e6a44c">
             <!--            <div style="color: red;font-size: 30px;font-weight: bold">中国共产党人精神谱系</div>-->
             <!--            <div style="color: red;font-size: 30px;font-weight: bold">影视信息库</div>-->
 
             <!-- 首页 -->
             <div class="homepage" id="homepage">
                 <div class="homeTitle">
-                    <div style="font-size: 30px;letter-spacing: 10px;margin-bottom: 3%">中国共产党人精神谱系</div>
-                    <div style="font-size: 40px;letter-spacing: 10px;margin-bottom: 5%">影视信息库</div>
+                    <div style="font-size: 35px;letter-spacing: 10px;margin-top: 3%;margin-bottom: 2%">中国共产党人精神谱系</div>
+                    <div style="font-size: 45px;letter-spacing: 10px;margin-bottom: 5%">影视信息库</div>
                 </div>
             </div>
 
 
         </div>
         <div>
-            <form style="background-color: #ffffff;padding-top: 20px;padding-bottom: 20px;"
-                  @submit.prevent="selectFilm">
-                <div style="margin-bottom: 10px">
+            <form style="background-color: #e6a44c;padding-top: 20px;padding-bottom: 20px;"
+                  >
+                <div style="margin-bottom: 10px;font-size:25px;">
                     <div class="search">
-                        <div class="myForm">
+                        <div class="myForm" style="font-size:25px;display: flex;">
                             <!-- 使用 v-model 绑定输入框的值 -->
-                            <input placeholder="请输入..." name="keyword" type="text" v-model="keyword">
-                            <button type="submit"></button>
+                            <input style="font-size:25px;background-color: white" placeholder="请输入..." name="keyword" type="text" v-model="keyword">
+                            <div style="width:72px;" id="loadPapersBtn">
+                                <!--                        <button style="width:72px; border: none; outline: none"  onclick="selectArticle()"></button>-->
+                                <div style="" class="selectButten" @click="selectFilm()">搜索</div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div style="display: flex;justify-content: center;font-size: 21px;font-weight: bold">
-                    <div>
+                    <div >
                         <!-- 使用 v-model 绑定单选框的值 -->
-                        <label>
-                            <input type="checkbox" value="电影" name="filmType" v-model="selectedFilmType"> 电影
+                        <label style="font-weight: bold">
+                            <input  type="checkbox" value="电影" name="filmType" v-model="selectedFilmType"> 电影
                         </label>
-                        <label>
+                        <label style="font-weight: bold">
                             <input type="checkbox" value="电视剧" name="filmType" v-model="selectedFilmType">电视剧
                         </label>
                     </div>
                     <div style="margin-left: 40px;border-left: 2px solid #0b0b0b;padding-left: 50px">
                         <!-- 使用 v-model 绑定复选框的值 -->
-                        <label>
+                        <label style="font-weight: bold">
                             <input style="margin-left: 0px" type="checkbox" value="4" v-model="selectedPeriods">伟大建党精神
                         </label>
-                        <label>
+                        <label style="font-weight: bold">
                             <input style="margin-left: 20px" type="checkbox" value="0" v-model="selectedPeriods">新民主主义革命时期
                         </label>
-                        <label>
+                        <label style="font-weight: bold">
                             <input style="margin-left: 20px" type="checkbox" value="1" v-model="selectedPeriods">社会主义革命和建设时期
                         </label>
-                        <label>
+                        <label style="font-weight: bold">
                             <input style="margin-left: 20px" type="checkbox" value="2" v-model="selectedPeriods">改革开放和社会主义现代化建设新时期
                         </label>
-                        <label>
+                        <label style="font-weight: bold">
                             <input style="margin-left: 20px" type="checkbox" value="3" v-model="selectedPeriods">中国特色社会主义新时代
                         </label>
                     </div>
@@ -90,7 +89,7 @@
 
 
         <!-- 影视列表 -->
-        <div style="padding-right: 0%;padding-left: 8%;background-color: #ffffff ;height: 60%;overflow-y: scroll">
+        <div id="myFilmTable" style="padding-right: 0%;padding-left: 8%;padding-top: 2%;background-color: #ffffff ;height: 50%;overflow-y: scroll">
             <div style=" display: flex;     flex-wrap: wrap;gap: 20px; ">
                 <div v-for="(item, index) in selectFilmDate"
                      style="color: black;box-shadow: 20px 20px 10px rgba(0, 0, 0, 0.3);margin-right: 20px">
@@ -115,7 +114,9 @@
 
 
 </div>
-<script>
+</body>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
     new Vue({
         el: '#home',
         data: {
@@ -128,6 +129,12 @@
         },
         methods: {
             selectFilm() {
+                const div = document.getElementById('myFilmTable');
+                div.style.display = 'block';
+                var targetDiv = document.getElementById('targetDiv');
+
+                // 修改 padding-top 样式
+                targetDiv.style.paddingTop = '5%';
                 // 收集表单数据
                 const formData = {
                     keyword: this.keyword,
@@ -165,16 +172,37 @@
                 window.location.href = "/front/goToAboutMe";
             },
 
+            getFilmDate(){
+                const div = document.getElementById('myFilmTable');
+                var targetDiv = document.getElementById('targetDiv');
+
+                // 修改 padding-top 样式
+                targetDiv.style.paddingTop = '18%';
+                div.style.display = 'none';
+            }
+
         },
         mounted() {
             this.selectFilm()
+            this.getFilmDate()
         },
         created() {
         }
     });
 </script>
 <style>
-
+    .selectButten {
+        width: 72px;
+        border: none;
+        height: 100%;
+        outline: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #c5464a;
+        border-radius: 0px 19px 19px 0px;
+        color: white
+    }
     .homeTitle {
         /*padding-top: 17%;*/
         display: flex;
@@ -240,7 +268,7 @@
         height: 42px;
         padding-left: 13px;
         border: 2px solid #c5464a;
-        border-radius: 19px; /*border-radius 属性用于向元素添加圆角边框：*/
+        border-radius: 19px 0px 0px 19px; /*border-radius 属性用于向元素添加圆角边框：*/
         background: transparent; /*背景透明*/
     }
 
@@ -276,6 +304,7 @@
 
     /*}*/
     .menu {
+        font-weight: bold;
         color: white;
         font-size: 30px;
         background-color: rgba(0, 0, 0, 0.2);

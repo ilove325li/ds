@@ -52,7 +52,9 @@ public class DsArticle extends BaseEntity
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "PubTime-发表时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date pubTime;
-
+    /** 全文词 */
+    @Excel(name = "全文词")
+    private String fullTextWords;
     /** 全文 */
     @Excel(name = "URL-网址")
     private String articleText;
@@ -65,9 +67,7 @@ public class DsArticle extends BaseEntity
         this.fullTextWords = fullTextWords;
     }
 
-    /** 全文词 */
-    @Excel(name = "全文词")
-    private String fullTextWords;
+
 
     public void setId(Long id)
     {

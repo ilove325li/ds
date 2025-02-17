@@ -2,16 +2,16 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <script th:src="@{/js/vue/vue.js}"></script>
-    <th:block th:include="include :: header('文章管理列表')"/>
+    <th:block th:include="include :: header('文章列表')"/>
 </head>
 <body class="gray-bg">
 
-<div style="width: 100%;height: 100%;background-color: #e6a44c" class="hame" id="home">
+<div style="width: 100%;height: 100%;background-color: #e6a44c;overflow: hidden" class="hame" id="home">
 
     <!--    <div th:text="${literature}">-->
     <!--    </div>-->
     <!-- 菜单 -->
-    <div class="menu">
+    <div class="menu" style="position: fixed;top: 0">
         <div style="display: flex;
             text-align: center;
             justify-content: center;
@@ -31,9 +31,9 @@
 <!--            <div>中国共产党人精神谱系</div>-->
 <!--            <div>文献数据库</div>-->
 <!--        </div>-->
-        <div class="homeTitle">
-            <div style="font-size: 30px;letter-spacing: 10px;margin-bottom: 0%">中国共产党人精神谱系</div>
-            <div style="font-size: 40px;letter-spacing: 10px;margin-bottom: 0%">影视信息库</div>
+        <div class="homeTitle" >
+            <div style="font-size: 35px;letter-spacing: 10px;margin-bottom: 0%">中国共产党人精神谱系</div>
+            <div style="font-size: 45px;letter-spacing: 10px;margin-bottom: 0%">文献数据库</div>
         </div>
 
         <form id="formId">
@@ -42,16 +42,16 @@
             <!-- 搜索框 -->
             <div style="display: flex; justify-content: center; margin-top: 30px;">
                 <div class="search"
-                     style="min-width: 800px; max-width: 800px; border: 2px solid white; display: flex; border-radius: 19px 19px 19px 19px">
-                    <select style="display: inline; padding-left: 4px; width: 72px; border-radius: 15px 0 0 15px; border: none; outline: none"
+                     style="font-size:25px;min-width: 800px; max-width: 800px; border: 2px solid white; display: flex; border-radius: 19px 19px 19px 19px;overflow: hidden">
+                    <select  style="display: inline; padding-left: 4px; width: 14%;background-color: #ffffff ; border-radius: 15px 0 0 15px;border: none; outline: none;"
                             name="key" id="searchKeySelect">
-                        <option style="display: inline" value="0" th:selected="${searchKey == '0'}">全文</option>
+                        <option style="display: inline;" value="0" th:selected="${searchKey == '0'}">全文</option>
                         <option style="display: inline" value="1" th:selected="${searchKey == '1'}">标题</option>
                         <option style="display: inline" value="2" th:selected="${searchKey == '2'}">关键字</option>
                     </select>
                     <input style="border: none; outline: none" placeholder="请输入..." id="keywordInput"
                            name="searchTerms" type="text">
-                    <div style="width:72px;" id="loadPapersBtn">
+                    <div style="width:72px;" id="loadPapersBtn" onclick="getDate()">
                         <!--                        <button style="width:72px; border: none; outline: none"  onclick="selectArticle()"></button>-->
                         <div style="" class="selectButten" onclick="$.table.search()">搜索</div>
                     </div>
@@ -66,7 +66,7 @@
 
 
         <!-- 表格 -->
-        <div  style="padding-left:50px;padding-right: 50px;padding-top: 50px;">
+        <div id="myTableDiv" style="padding-left:50px;padding-right: 50px;padding-top: 50px;">
             <div class="container-div">
                 <div class="row">
                     <div class="col-sm-12 select-table table-striped">
@@ -110,12 +110,12 @@
 
 
     // 获取目标 div 元素
-    var targetDiv = document.getElementById('targetDiv');
-    // 判断 literature 是否不为 null
-    if (literature !== undefined && literature !== ' ') {
-        // 修改 padding-top 样式
-        targetDiv.style.paddingTop = '5%';
-    }
+    // var targetDiv = document.getElementById('targetDiv');
+    // // 判断 literature 是否不为 null
+    // if (literature !== undefined && literature !== ' ') {
+    //     // 修改 padding-top 样式
+    //     targetDiv.style.paddingTop = '5%';
+    // }
     // });
 
 
@@ -134,6 +134,19 @@
         window.location.href = "/front/goToAboutMe";
     }
     $(function () {
+        // alert("你好"+literature)
+        if(literature===''){
+            const div = document.getElementById('myTableDiv');
+            div.style.display = 'none';
+
+
+            var targetDiv = document.getElementById('targetDiv');
+
+                // 修改 padding-top 样式
+                targetDiv.style.paddingTop = '17%';
+
+            return;
+        }
 
 
 
@@ -143,12 +156,12 @@
         inputElement.value = literature;
 
         // 获取目标 div 元素
-        var targetDiv = document.getElementById('targetDiv');
-        // 判断 literature 是否不为 null
-        if (literature !== null && literature !== '') {
-            // 修改 padding-top 样式
-            targetDiv.style.paddingTop = '5%';
-        }
+        // var targetDiv = document.getElementById('targetDiv');
+        // // 判断 literature 是否不为 null
+        // if (literature !== null && literature !== '') {
+        //     // 修改 padding-top 样式
+        //     targetDiv.style.paddingTop = '5%';
+        // }
 
 
         var options = {
@@ -165,17 +178,17 @@
                 //     {
                 //     checkbox: true
                 // },
-                {
-                    field: 'srcDatabase',
-                    title: '来源库',
-                    cellStyle: function (value, row, index) {
-                        return {
-                            css: {
-                                'white-space': 'nowrap'
-                            }
-                        };
-                    }
-                },
+                // {
+                //     field: 'srcDatabase',
+                //     title: '来源库',
+                //     cellStyle: function (value, row, index) {
+                //         return {
+                //             css: {
+                //                 'white-space': 'nowrap'
+                //             }
+                //         };
+                //     }
+                // },
                 {
                     field: 'title',
                     title: '题名',
@@ -202,17 +215,17 @@
                         };
                     }
                 },
-                {
-                    field: 'organ',
-                    title: '单位',
-                    cellStyle: function (value, row, index) {
-                        return {
-                            css: {
-                                'white-space': 'nowrap'
-                            }
-                        };
-                    }
-                },
+                // {
+                //     field: 'organ',
+                //     title: '单位',
+                //     cellStyle: function (value, row, index) {
+                //         return {
+                //             css: {
+                //                 'white-space': 'nowrap'
+                //             }
+                //         };
+                //     }
+                // },
                 {
                     field: 'source',
                     title: '文献来源',
@@ -227,36 +240,36 @@
                 {
                     field: 'keyword',
                     title: '关键词',
-                    cellStyle: function (value, row, index) {
-                        return {
-                            css: {
-                                'white-space': 'nowrap'
-                            }
-                        };
-                    }
+                    // cellStyle: function (value, row, index) {
+                    //     return {
+                    //         css: {
+                    //             'white-space': 'nowrap'
+                    //         }
+                    //     };
+                    // }
                 },
                 // {
                 //     field: 'summary',
                 //     title: '摘要'
                 // },
-                {
-                    field: 'articleText',
-                    title: '链接',
-                    formatter: function(value, row, index) {
-                        // 如果 articleText 有值，则创建一个 a 标签链接
-                        if (value) {
-                            return '<a href="' + value + '" target="_blank">跳转链接</a>';
-                        }
-                        return '';
-                    },
-                    cellStyle: function (value, row, index) {
-                        return {
-                            css: {
-                                'white-space': 'nowrap'
-                            }
-                        };
-                    }
-                },
+                // {
+                //     field: 'articleText',
+                //     title: '链接',
+                //     formatter: function(value, row, index) {
+                //         // 如果 articleText 有值，则创建一个 a 标签链接
+                //         if (value) {
+                //             return '<a href="' + value + '" target="_blank">跳转链接</a>';
+                //         }
+                //         return '';
+                //     },
+                //     cellStyle: function (value, row, index) {
+                //         return {
+                //             css: {
+                //                 'white-space': 'nowrap'
+                //             }
+                //         };
+                //     }
+                // },
                 {
                     field: 'pubTime',
                     title: '发表时间',
@@ -273,6 +286,189 @@
         $.table.init(options);
 
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function getDate () {
+        // alert("你好"+literature)
+        // if(literature===''){
+        //     return;
+        // }
+
+        const div = document.getElementById('myTableDiv');
+        var targetDiv = document.getElementById('targetDiv');
+
+        // 修改 padding-top 样式
+        targetDiv.style.paddingTop = '5%';
+        div.style.display = 'block';
+
+        // 获取输入框元素
+        var inputElement = document.getElementById('keywordInput');
+        // 给输入框赋值
+        // inputElement.value = literature;
+
+        console.log(inputElement.value)
+
+        // 获取目标 div 元素
+        // var targetDiv = document.getElementById('targetDiv');
+        // // 判断 literature 是否不为 null
+        // if (literature !== null && literature !== '') {
+        //     // 修改 padding-top 样式
+        //     targetDiv.style.paddingTop = '5%';
+        // }
+
+
+        var options = {
+            url: prefix + "/selectArticle?text=" + inputElement.value + "&" + "key=" + searchKey,
+            showSearch: false, // 隐藏搜索框
+            showRefresh: false, // 隐藏刷新按钮
+            showToggle: false, // 隐藏视图切换按钮
+            showColumns: false, // 隐藏列选择按钮
+            pagination: true, // 开启分页
+            pageList: [], // 不显示每页记录数选择框
+            showPaginationSwitch: false, // 隐藏切换分页显示的按钮
+            pageSize: 11,
+            columns: [
+                //     {
+                //     checkbox: true
+                // },
+                // {
+                //     field: 'srcDatabase',
+                //     title: '来源库',
+                //     cellStyle: function (value, row, index) {
+                //         return {
+                //             css: {
+                //                 'white-space': 'nowrap'
+                //             }
+                //         };
+                //     }
+                // },
+                {
+                    field: 'title',
+                    title: '题名',
+                    formatter: function (value, row, index) {
+                        // 创建一个带有点击事件的 a 标签
+                        return '<a href="javascript:void(0);" onclick="goToArticleDetail(\'' + row.id + '\')">' + value + '</a>';
+                    },
+                    cellStyle: function (value, row, index) {
+                        return {
+                            css: {
+                                'white-space': 'nowrap'
+                            }
+                        };
+                    }
+                },
+                {
+                    field: 'author',
+                    title: '作者',
+                    cellStyle: function (value, row, index) {
+                        return {
+                            css: {
+                                'white-space': 'nowrap'
+                            }
+                        };
+                    }
+                },
+                // {
+                //     field: 'organ',
+                //     title: '单位',
+                //     cellStyle: function (value, row, index) {
+                //         return {
+                //             css: {
+                //                 'white-space': 'nowrap'
+                //             }
+                //         };
+                //     }
+                // },
+                {
+                    field: 'source',
+                    title: '文献来源',
+                    cellStyle: function (value, row, index) {
+                        return {
+                            css: {
+                                'white-space': 'nowrap'
+                            }
+                        };
+                    }
+                },
+                {
+                    field: 'keyword',
+                    title: '关键词',
+                    // cellStyle: function (value, row, index) {
+                    //     return {
+                    //         css: {
+                    //             'white-space': 'nowrap'
+                    //         }
+                    //     };
+                    // }
+                },
+                // {
+                //     field: 'summary',
+                //     title: '摘要'
+                // },
+                // {
+                //     field: 'articleText',
+                //     title: '链接',
+                //     formatter: function(value, row, index) {
+                //         // 如果 articleText 有值，则创建一个 a 标签链接
+                //         if (value) {
+                //             return '<a href="' + value + '" target="_blank">跳转链接</a>';
+                //         }
+                //         return '';
+                //     },
+                //     cellStyle: function (value, row, index) {
+                //         return {
+                //             css: {
+                //                 'white-space': 'nowrap'
+                //             }
+                //         };
+                //     }
+                // },
+                {
+                    field: 'pubTime',
+                    title: '发表时间',
+                    cellStyle: function (value, row, index) {
+                        return {
+                            css: {
+                                'white-space': 'nowrap'
+                            }
+                        };
+                    }
+                }
+            ]
+        };
+        $.table.init(options);
+
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     function footerStyle(column) {
         return {
@@ -469,6 +665,7 @@
         background-color: rgba(0, 0, 0, 0.2);
         position: fixed;
         width: 100%;
+        font-weight: bold;
         display: flex;
         justify-content: center;
         align-items: center;
