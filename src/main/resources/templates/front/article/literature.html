@@ -24,7 +24,7 @@
     </div>
 
 
-    <div style="padding-top: 15%;" id="targetDiv">
+    <div style="padding-top: 18%;" id="targetDiv">
 
         <!-- 标题-->
 <!--        <div style="text-align: center;font-size: 37px;font-weight: bold;color: white">-->
@@ -40,14 +40,14 @@
 
 
             <!-- 搜索框 -->
-            <div style="display: flex; justify-content: center; margin-top: 30px;">
+            <div style="display: flex; justify-content: center; margin-top: 60px;">
                 <div class="search"
-                     style="font-size:25px;min-width: 800px; max-width: 800px; border: 2px solid white; display: flex; border-radius: 19px 19px 19px 19px;overflow: hidden">
+                     style="border: 2px solid #c5464a;font-size:25px;min-width: 950px; max-width: 950px;  display: flex; border-radius: 19px 19px 19px 19px;overflow: hidden">
                     <select  style="display: inline; padding-left: 4px; width: 14%;background-color: #ffffff ; border-radius: 15px 0 0 15px;border: none; outline: none;"
                             name="key" id="searchKeySelect">
-                        <option style="display: inline;" value="0" th:selected="${searchKey == '0'}">全文</option>
-                        <option style="display: inline" value="1" th:selected="${searchKey == '1'}">标题</option>
-                        <option style="display: inline" value="2" th:selected="${searchKey == '2'}">关键字</option>
+                        <option style="display: inline;text-align: center" value="0" th:selected="${searchKey == '0'}">全文</option>
+                        <option style="display: inline;text-align: center" value="1" th:selected="${searchKey == '1'}">标题</option>
+                        <option style="display: inline;text-align: center" value="2" th:selected="${searchKey == '2'}">关键字</option>
                     </select>
                     <input style="border: none; outline: none" placeholder="请输入..." id="keywordInput"
                            name="searchTerms" type="text">
@@ -66,7 +66,7 @@
 
 
         <!-- 表格 -->
-        <div id="myTableDiv" style="padding-left:50px;padding-right: 50px;padding-top: 50px;">
+        <div id="myTableDiv" style="padding-left:50px;padding-right: 50px;padding-top: 50px;display: none">
             <div class="container-div">
                 <div class="row">
                     <div class="col-sm-12 select-table table-striped">
@@ -80,7 +80,28 @@
 
 </div>
 
-<th:block th:include="include :: footer"/>
+<!-- 通用JS -->
+<div >
+    <script th:inline="javascript"> var ctx = [[@{/}]]; var lockscreen = [[${session.lockscreen}]]; if(lockscreen){window.top.location=ctx+"lockscreen";} </script>
+
+    <script th:src="@{/js/jquery.min.js?v=3.6.3}"></script>
+    <script th:src="@{/js/bootstrap.min.js?v=3.3.7}"></script>
+    <!-- bootstrap-table 表格插件 -->
+    <script th:src="@{/ajax/libs/bootstrap-table/bootstrap-table.min.js?v=1.18.3}"></script>
+    <script th:src="@{/ajax/libs/bootstrap-table/locale/bootstrap-table-zh-CN.min.js?v=1.18.3}"></script>
+    <script th:src="@{/ajax/libs/bootstrap-table/extensions/mobile/bootstrap-table-mobile.js?v=1.18.3}"></script>
+    <!-- jquery-validate 表单验证插件 -->
+
+    <!-- bootstrap-table 表格树插件 -->
+
+    <!-- 遮罩层 -->
+    <script th:src="@{/ajax/libs/blockUI/jquery.blockUI.js?v=2.70.0}"></script>
+    <script th:src="@{/ajax/libs/iCheck/icheck.min.js?v=1.0.3}"></script>
+    <script th:src="@{/ajax/libs/layer/layer.min.js?v=3.5.1}"></script>
+    <script th:src="@{/ajax/libs/layui/layui.min.js?v=2.7.5}"></script>
+    <script th:src="@{/ruoyi/js/common.js?v=4.7.7}"></script>
+    <script th:src="@{/ruoyi/js/ry-ui.js?v=4.7.7}"></script>
+</div>
 <script th:inline="javascript">
 
 
@@ -143,7 +164,7 @@
             var targetDiv = document.getElementById('targetDiv');
 
                 // 修改 padding-top 样式
-                targetDiv.style.paddingTop = '17%';
+                // targetDiv.style.paddingTop = '17%';
 
             return;
         }
@@ -623,7 +644,7 @@
         align-items: center;
         justify-content: center;
         background-color: #c5464a;
-        border-radius: 0px 19px 19px 0px;
+        /*border-radius: 0px 19px 19px 0px;*/
         color: white
     }
 
