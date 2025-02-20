@@ -194,8 +194,8 @@
 
         .containTextOfsamllTile:hover {
             /* 鼠标悬停时，宽度和高度增加 10px */
-            width: 190.5px;
-            height: 75px;
+            /*width: 190.5px;*/
+            /*height: 75px;*/
             /* 使用较暗的颜色，可以通过降低亮度等方式得到 */
             background-color: #946628;
         }
@@ -204,8 +204,8 @@
         /* 移除了.textOfsamllTile:hover 规则 */
         .textOfsamllTile {
             white-space: nowrap; /* 禁止文本换行 */
-            overflow: hidden; /* 隐藏超出部分 */
-            text-overflow: ellipsis; /* 超出部分显示为省略号 */
+            /*overflow: hidden; !* 隐藏超出部分 *!*/
+            /*text-overflow: ellipsis; !* 超出部分显示为省略号 *!*/
             /*width: 180.5px;*/
             /*height: 65px;*/
             /*background-color: #ba8034;*/
@@ -227,10 +227,13 @@
 
 
         .containTextOfsamllTile {
+            white-space: nowrap; /* 禁止文本换行 */
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 180.5px;
+            min-width: 180.5px;
+            padding-left: 3%;
+            /*padding-right: 3%;*/
             height: 65px;
             background-color: #ba8034;
             margin-right: 20px;
@@ -371,8 +374,8 @@
             <div class="subdirectoryOfallPeriodstitle">
                 <div class="goToMyPage" data-target="twoPeriods">社会主义革命和建设时期</div>
             </div>
-            <div class="subdirectoryOfallPeriodstitle">
-                <div class="goToMyPage" data-target="othreePeriods">改革开发和社会主义现代化建设新时期</div>
+            <div class="subdirectoryOfallPeriodstitle" style="padding-right: 3%;padding-left: 3%;white-space: nowrap;">
+                <div class="goToMyPage" data-target="othreePeriods" >改革开发和社会主义现代化建设新时期</div>
             </div>
             <div class="subdirectoryOfallPeriodstitle">
                 <div class="goToMyPage" data-target="fourPeriods">中国特色社会主义新时代</div>
