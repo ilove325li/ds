@@ -93,6 +93,11 @@ public class DsFilmController extends BaseController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, ModelMap mmap) {
         DsFilm dsFilm = dsFilmService.selectDsFilmById(id);
+
+        if(dsFilm.getType()!=null){
+            dsFilm.setType(","+dsFilm.getType()+",");
+        }
+
         mmap.put("dsFilm", dsFilm);
         return prefix + "/edit";
     }

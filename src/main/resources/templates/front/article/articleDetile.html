@@ -32,7 +32,7 @@
                 </div>
                 <div style="font-size: 25px;font-weight: bold">摘要：</div>
                 <p style="font-size: 22px;letter-spacing: 1.2px;line-height: 1.2; text-indent: 2em;"
-                   th:text="${dsArticle.summary}">
+                   th:text="${dsArticle.summary}+...">
 
                 </p>
 
@@ -46,8 +46,7 @@
                 </div>
 
                 <div style="margin-top: 10px;font-size: 20px;">
-                    <span style="font-size: 20px;font-weight: bold">链接：</span> <a th:href="${dsArticle.articleText}"
-                                                                                    target="_blank" th:text="${dsArticle.articleText}"></a>
+                    <span style="font-size: 20px;font-weight: bold">链接：</span> <a th:href="${dsArticle.articleText}" target="_blank" th:text="获取全文"></a>
                 </div>
             </div>
         </div>

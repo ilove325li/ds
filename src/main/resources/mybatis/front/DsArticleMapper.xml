@@ -38,6 +38,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
 
+
+    <select id="selectDsArticleListByTitle" parameterType="DsArticle" resultMap="DsArticleResult">
+        <include refid="selectDsArticleVo"/>
+        <where>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+        </where>
+    </select>
+
+
     <select id="selectDsArticleListOfUserSite" parameterType="DsArticle" resultMap="DsArticleResult">
         <include refid="selectDsArticleVo"/>
         <where>

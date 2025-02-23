@@ -82,11 +82,14 @@
                     </div>
 
 
-                    <h3 style="font-size: 22px;color: green">获奖情况：</h3>
-                    <div style="width: 100%;letter-spacing: 1.3px;line-height: 6px;font-size: 18px">
-                        <p style="line-height: 1.3; text-indent: 2em;color: #000000"
-                           th:text="${dsFilm.awardInformation}"></p>
-                    </div>
+                    <!-- 使用 th:if 判断 dsFilm.awardInformation 是否不为空且不为 null -->
+                    <th:block th:if="${dsFilm.awardInformation != null and dsFilm.awardInformation != ''}">
+                        <h3 style="font-size: 22px;color: green">获奖情况：</h3>
+                        <div style="width: 100%;letter-spacing: 1.3px;line-height: 6px;font-size: 18px">
+                            <p style="line-height: 1.3; text-indent: 2em;color: #000000"
+                               th:text="${dsFilm.awardInformation}"></p>
+                        </div>
+                    </th:block>
 
 
                     <div style="display: flex;gap: 2%">
@@ -139,8 +142,8 @@
             // 定义点击事件处理函数
             goToArticleDetail(url) {
                 // 这里可以编写点击题名后的具体逻辑，例如弹出提示框显示题名
-                console.log(url)
-                window.location.href = url;
+                // 在新窗口或标签页中打开指定的 URL
+                window.open(url, '_blank');
             }
         },
 

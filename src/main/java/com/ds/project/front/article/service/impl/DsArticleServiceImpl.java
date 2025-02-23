@@ -13,6 +13,7 @@ import com.ds.project.front.article.mapper.DsArticleMapper;
 import com.ds.project.front.article.domain.DsArticle;
 import com.ds.project.front.article.service.IDsArticleService;
 import com.ds.common.utils.text.Convert;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 文章管理Service业务层处理
@@ -99,6 +100,7 @@ public class DsArticleServiceImpl implements IDsArticleService
     }
 
     @Override
+    @Transactional
     public String importUser(List<DsArticle> userList, boolean updateSupport)   {
         if (StringUtils.isNull(userList) || userList.size() == 0)
         {
@@ -106,6 +108,19 @@ public class DsArticleServiceImpl implements IDsArticleService
         }
 
         for (DsArticle dsArticle : userList){
+
+
+            List<DsArticle> dsArticles = dsArticleMapper.selectDsArticleListByTitle(dsArticle.getTitle());
+            if(!dsArticles.isEmpty()){
+                for (DsArticle ds :dsArticles){
+                    dsArticle.setFullTextWords(dsArticle.getFullTextWords()+","+ds.getFullTextWords());
+                    dsArticleMapper.deleteDsArticleById(ds.getId());
+                }
+
+            }
+
+
+
             dsArticleMapper.insertDsArticle(dsArticle);
         }
 

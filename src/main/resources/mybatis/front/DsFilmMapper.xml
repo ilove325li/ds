@@ -21,15 +21,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="kind"    column="kind"    />
         <result property="recommend"    column="recommend"    />
         <result property="awardInformation"    column="award_information"    />
+        <result property="sortNum"    column="sort_num"    />
     </resultMap>
-
     <sql id="selectDsFilmVo">
-        select id, annual, tv_series, img, topic_content, type, director, screenwriter, actor, episode_num, reasons, chronological_division, url, kind, recommend, award_information from ds_film
+        select id, annual, tv_series, img, topic_content, type, director, screenwriter, actor, episode_num, reasons, chronological_division, url, kind, recommend, award_information, sort_num from ds_film
     </sql>
 
     <select id="selectDsFilmList" parameterType="DsFilm" resultMap="DsFilmResult">
         <include refid="selectDsFilmVo"/>
-        <where>  
+        <where>
+1=1
             <if test="annual != null "> and annual = #{annual}</if>
             <if test="tvSeries != null  and tvSeries != ''"> and tv_series like concat('%', #{tvSeries}, '%')</if>
             <if test="img != null  and img != ''"> and img = #{img}</if>
@@ -44,6 +45,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="url != null  and url != ''"> and url = #{url}</if>
             <if test="kind != null  and kind != ''"> and kind = #{kind}</if>
             <if test="recommend != null "> and recommend = #{recommend}</if>
+            <if test="sortNum != null "> and sort_num = #{sortNum}</if>
+            ORDER BY sort_num DESC
         </where>
     </select>
     
@@ -70,6 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="kind != null and kind != ''">kind,</if>
             <if test="recommend != null">recommend,</if>
             <if test="awardInformation != null">award_information,</if>
+            <if test="sortNum != null">sort_num,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="annual != null">#{annual},</if>
@@ -87,6 +91,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="kind != null and kind != ''">#{kind},</if>
             <if test="recommend != null">#{recommend},</if>
             <if test="awardInformation != null">#{awardInformation},</if>
+            <if test="sortNum != null">#{sortNum},</if>
          </trim>
     </insert>
 
@@ -108,6 +113,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="kind != null and kind != ''">kind = #{kind},</if>
             <if test="recommend != null">recommend = #{recommend},</if>
             <if test="awardInformation != null">award_information = #{awardInformation},</if>
+            <if test="sortNum != null">sort_num = #{sortNum},</if>
         </trim>
         where id = #{id}
     </update>
@@ -131,9 +137,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectDsFilmVo"/>
         <!-- 使用 <where> 标签自动处理 where 关键字和多余的 and -->
         <where>
+1=1
             <!-- 检查 dsFilm 对象的 tvSeries 属性是否不为空 -->
             <if test="dsFilm.tvSeries != null">
-                tv_series like concat('%', #{dsFilm.tvSeries}, '%')
+                and tv_series like concat('%', #{dsFilm.tvSeries}, '%')
             </if>
             <!-- 检查 dsFilm 对象的 kind 属性是否不为空 -->
 <!--            <if test="dsFilm.kind != null">-->
@@ -156,6 +163,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 </foreach>
             </if>
         </where>
+        ORDER BY sort_num DESC
     </select>
 
 </mapper>

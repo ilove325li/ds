@@ -97,6 +97,18 @@ public class DsFilm extends BaseEntity
     @Excel(name = "获奖信息")
     private String awardInformation;
 
+    /** 排序值 */
+    @Excel(name = "排序值")
+    private Long sortNum;
+
+    public Long getSortNum() {
+        return sortNum;
+    }
+
+    public void setSortNum(Long sortNum) {
+        this.sortNum = sortNum;
+    }
+
     public void setId(Long id)
     {
         this.id = id;

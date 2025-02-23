@@ -27,6 +27,8 @@ public interface DsArticleMapper
      */
     public List<DsArticle> selectDsArticleList(DsArticle dsArticle);
 
+    public List<DsArticle> selectDsArticleListByTitle(String title);
+
 
     public List<DsArticle> selectDsArticleListOfUserSite(DsArticle dsArticle);
 

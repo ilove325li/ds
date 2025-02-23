@@ -1,10 +1,12 @@
 package com.ds.project.front.article.controller;
 
+import java.io.InputStream;
 import java.util.List;
 
 import com.ds.framework.web.domain.BaseEntity;
 import com.ds.project.front.article.mapper.DsArticleMapper;
 import com.ds.project.system.user.domain.User;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -214,9 +216,33 @@ public class DsArticleController extends BaseController
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
     {
 
+
+//
+//        try (InputStream inputStream = file.getInputStream()) {
+//            com.spire.xls.Workbook workbook = new com.spire.xls.Workbook();
+//            workbook.loadFromFile(file.getName());
+//            workbook.saveToFile("C:\\abc.xlsx", FileFormat.Version2013);
+//
+//      }
+
+
+
+
+
+
+
         // 获取上传文件的原始文件名
         String fileName = file.getOriginalFilename();
-        String[] split = fileName.split(".xlsx");
+        String[] split;
+        assert fileName != null;
+        if(fileName.contains("xlsx")){
+             split = fileName.split(".xlsx");
+        }else{
+            split = fileName.split(".xls");
+        }
+
+
+
         System.out.println("上传的文件名是: " + split[0]);
 
         ExcelUtil<DsArticle> util = new ExcelUtil<DsArticle>(DsArticle.class);
@@ -226,7 +252,8 @@ public class DsArticleController extends BaseController
             dsArticle.setFullTextWords (split[0]);
         }
 
-        String message = dsArticleService.importUser(userList, updateSupport);
+        String message = dsArticleService.
+                importUser(userList, updateSupport);
         return AjaxResult.success(message);
     }
 
