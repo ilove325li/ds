@@ -2,6 +2,7 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <th:block th:include="include :: header('修改党史标题管理')" />
+    <th:block th:include="include :: summernote-css" />
 </head>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
@@ -30,16 +31,23 @@
 <!--                </div>-->
 <!--            </div>-->
 
+<!--            <div class="form-group">-->
+<!--                <label class="col-sm-3 control-label">简介：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <textarea name="briefIntroduction" th:field="*{briefIntroduction}" class="form-control" type="text"></textarea>-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="form-group">
                 <label class="col-sm-3 control-label">简介：</label>
                 <div class="col-sm-8">
-                    <textarea name="briefIntroduction" th:field="*{briefIntroduction}" class="form-control" type="text"></textarea>
+                    <input type="hidden" class="form-control" th:field="*{briefIntroduction}">
+                    <div class="summernote" id="briefIntroduction"></div>
                 </div>
             </div>
-
         </form>
     </div>
     <th:block th:include="include :: footer" />
+    <th:block th:include="include :: summernote-js" />
     <script th:inline="javascript">
         var prefix = ctx + "front/title";
         $("#form-title-edit").validate({
@@ -62,7 +70,45 @@
             };
             $.modal.openOptions(options);
         }
-
+        $(function() {
+            $('.summernote').each(function(i) {
+                $('#' + this.id).summernote({
+                    lang: 'zh-CN',
+                    dialogsInBody: true,
+                    callbacks: {
+                        onChange: function(contents, $edittable) {
+                            $("input[name='" + this.id + "']").val(contents);
+                        },
+                        onImageUpload: function(files) {
+                            var obj = this;
+                            var data = new FormData();
+                            data.append("file", files[0]);
+                            $.ajax({
+                                type: "post",
+                                url: ctx + "common/upload",
+                                data: data,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                dataType: 'json',
+                                success: function(result) {
+                                    if (result.code == web_status.SUCCESS) {
+                                        $('#' + obj.id).summernote('insertImage', result.url);
+                                    } else {
+                                        $.modal.alertError(result.msg);
+                                    }
+                                },
+                                error: function(error) {
+                                    $.modal.alertWarning("图片上传失败。");
+                                }
+                            });
+                        }
+                    }
+                });
+                var content = $("input[name='" + this.id + "']").val();
+                $('#' + this.id).summernote('code', content);
+            })
+        });
         function doSubmit(index, layero){
             var body = $.modal.getChildFrame(index);
             $("#treeId").val(body.find('#treeId').val());
